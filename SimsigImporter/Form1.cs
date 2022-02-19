@@ -16,18 +16,17 @@ namespace SimsigImporter
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-            var tt = new SimSigTimetable
-            {
-                ID = comboSim.SelectedItem.ToString(),
-                Version = textVersion.Text,
-                Name = textName.Text,
-                Description = textDesc.Text,
-                StartTime = textStart.Text.ToSimsigTime(),
-                FinishTime = textEnd.Text.ToSimsigTime(),
-                TrainDescriptionTemplate = textTemplate.Text
-            };
+
+            timeTable.ID = comboSim.SelectedItem.ToString();
+            timeTable.Version = textVersion.Text;
+            timeTable.Name = textName.Text;
+            timeTable.Description = textDesc.Text;
+            timeTable.StartTime = textStart.Text.ToSimsigTime();
+            timeTable.FinishTime = textEnd.Text.ToSimsigTime();
+            timeTable.TrainDescriptionTemplate = textTemplate.Text;
+            
             var exporter = new SimsigExporter();
-            exporter.Export(timeTable, "c:\\temp\\testexport.zip");
+            exporter.Export(timeTable, "c:\\temp\\testexport.wtt");
             MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

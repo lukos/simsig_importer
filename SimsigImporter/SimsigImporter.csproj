@@ -87,9 +87,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SimsigImporterLib\SimsigImporterLib.csproj">
-      <Project>{3e02fdd9-a40f-4672-b1c0-3f4488de8775}</Project>
-      <Name>SimsigImporterLib</Name>
+    <ProjectReference Include="..\SimsigImporterLibrary\SimsigImporterLibrary.csproj">
+      <Project>{6e06eea1-8f58-422a-901c-69fc1b26f07c}</Project>
+      <Name>SimsigImporterLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

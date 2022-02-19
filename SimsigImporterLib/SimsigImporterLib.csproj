@@ -55,6 +55,7 @@
     <Compile Include="Models\SeedGroup.cs" />
     <Compile Include="Models\SimSigTimetable.cs" />
     <Compile Include="Models\Timetable.cs" />
+    <Compile Include="Models\TimetableHeader.cs" />
     <Compile Include="Models\TrainCategory.cs" />
     <Compile Include="Models\Trip.cs" />
     <Compile Include="SimsigExporter.cs" />
