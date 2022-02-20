@@ -2,6 +2,7 @@
 using SimsigImporterLib.Helpers;
 using SimsigImporterLib.Models;
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace SimsigImporter
@@ -9,6 +10,8 @@ namespace SimsigImporter
     public partial class Form1 : Form
     {
         private SimSigTimetable timeTable = new SimSigTimetable();
+        private ProgressDialog progress = new ProgressDialog();
+
         public Form1()
         {
             InitializeComponent();
@@ -46,8 +49,14 @@ namespace SimsigImporter
                 }
             }
 
-            var importer = new SpreadsheetHelper(LogWarning, LogError);
+            var importer = new SpreadsheetHelper(LogInfo, LogWarning, LogError);
+
+            progress = new ProgressDialog();
+            progress.Show();
+
             var result = importer.Import(path);
+
+            progress.EnableButton();
             if ( result == null )
             {
 
@@ -58,14 +67,19 @@ namespace SimsigImporter
             }
         }
 
-        public void LogWarning(string warning)
+        public void LogWarning(string message)
         {
-
+            progress.AddMessage(message, Color.DarkOrange);
         }
 
-        public void LogError(string warning)
+        public void LogError(string message)
         {
+            progress.AddMessage(message, Color.DarkRed);
+        }
 
+        public void LogInfo(string message)
+        {
+            progress.AddMessage(message, Color.Black);
         }
     }
 }
