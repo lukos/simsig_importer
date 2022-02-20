@@ -21,7 +21,6 @@ namespace SimsigImporter
 
         private void btnExport_Click(object sender, EventArgs e)
         {
-
             timeTable.ID = comboSim.SelectedItem.ToString();
             timeTable.Version = textVersion.Text;
             timeTable.Name = textName.Text;
