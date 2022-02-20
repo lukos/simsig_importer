@@ -11,11 +11,13 @@ namespace SimsigImporterLib
 {
     public class SpreadsheetHelper
     {
+        private readonly Action<string> info;
         private readonly Action<string> warning;
         private readonly Action<string> error;
 
-        public SpreadsheetHelper(Action<string> warning, Action<string> error)
+        public SpreadsheetHelper(Action<string> info, Action<string> warning, Action<string> error)
         {
+            this.info = info;
             this.warning = warning;
             this.error = error;
         }
@@ -40,23 +42,27 @@ namespace SimsigImporterLib
                 Sheet sgSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Seed Groups");
                 if (sgSheet != null)
                 {
+                    info("Parsing seed groups");
                     tt.SeedGroups = ProcessSeedGroups(doc, sgSheet);
                     if (tt.SeedGroups == null)
                     {
+                        error("Error processing seed groups tab");
                         return null;
                     }
                 }
                 else
                 {
-                    warning("No seed groups found in spreadsheet");
+                    warning("No seed groups found in spreadsheet, skipping");
                 }
 
                 Sheet trainsSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Train Types");
                 if (trainsSheet != null)
                 {
+                    info("Parsing train types");
                     tt.TrainCategories = ProcessTrainTypes(doc, trainsSheet);
                     if (tt.TrainCategories == null)
                     {
+                        error("Error processing train types tab");
                         return null;
                     }
                 }
@@ -75,15 +81,20 @@ namespace SimsigImporterLib
 
                 if(tt.Timetables == null)
                 {
-                    error("No timetables created from timetable sheet");
+                    error("No timetables found in timetable sheet. Possible formatting error.");
                     return null;
                 }
 
+                info("Mapping timetables to their train type");
                 foreach(var working in tt.Timetables)
                 {
                     if(tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
                     {
                         working.Category = tt.TrainCategories.First(tc => tc.SheetId == working.Category).ID;
+                    }
+                    else
+                    {
+                        warning($"Could not find train type for ID {working.Category}");
                     }
                 }
 
