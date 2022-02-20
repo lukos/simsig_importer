@@ -11,6 +11,8 @@ namespace SimsigImporter
     {
         private SimSigTimetable timeTable = new SimSigTimetable();
         private ProgressDialog progress = new ProgressDialog();
+        private Guid saveDialogGuid = Guid.NewGuid();
+        private Guid openDialogGuid = Guid.NewGuid();
 
         public Form1()
         {
@@ -27,9 +29,29 @@ namespace SimsigImporter
             timeTable.StartTime = textStart.Text.ToSimsigTime();
             timeTable.FinishTime = textEnd.Text.ToSimsigTime();
             timeTable.TrainDescriptionTemplate = textTemplate.Text;
-            
+
+            string path;
+            using (var fileChooser = new SaveFileDialog())
+            {
+                fileChooser.Filter = "Simsig files (*.wtt)|*.wtt|All files (*.*)|*.*";
+                fileChooser.RestoreDirectory = true;
+                fileChooser.AddExtension = true;
+                fileChooser.DefaultExt = "wtt";
+                fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+                fileChooser.OverwritePrompt = true;
+
+                if (fileChooser.ShowDialog() == DialogResult.OK)
+                {
+                    path = fileChooser.FileName;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
             var exporter = new SimsigExporter();
-            exporter.Export(timeTable, "c:\\temp\\testexport.wtt");
+            exporter.Export(timeTable, path);
             MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 

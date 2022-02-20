@@ -11,6 +11,11 @@ namespace SimsigImporterLib
     {
         public void Export(SimSigTimetable timetable, string fileName)
         {
+            if ( File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
+
             var archive = ZipFile.Open(fileName, ZipArchiveMode.Create);
 
             using (var headerStream = new MemoryStream())
