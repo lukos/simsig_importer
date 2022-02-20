@@ -90,7 +90,17 @@ namespace SimsigImporterLib
                 {
                     if(tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
                     {
-                        working.Category = tt.TrainCategories.First(tc => tc.SheetId == working.Category).ID;
+                        var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
+                        working.Category = trainData.ID;
+                        // Train data is copied across (denormalised) to the working even though it has the reference above
+                        working.TrainLength = trainData.TrainLength;
+                        working.AccelBrakeIndex = trainData.AccelBrakeIndex;
+                        working.MaxSpeed = trainData.MaxSpeed;
+                        working.SpeedClass = trainData.SpeedClass;
+                        working.IsFreight = trainData.IsFreight;
+                        working.CanUseGoodsLines = trainData.CanUseGoodsLines;
+                        working.Electrification = trainData.Electrification;
+                        working.StartTraction = trainData.Electrification;
                     }
                     else
                     {

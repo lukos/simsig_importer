@@ -32,7 +32,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textVersion = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.btnImport = new System.Windows.Forms.Button();
             this.btnExport = new System.Windows.Forms.Button();
             this.textName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -83,18 +82,9 @@
             this.label2.TabIndex = 3;
             this.label2.Text = "Version";
             // 
-            // btnImport
-            // 
-            this.btnImport.Location = new System.Drawing.Point(674, 15);
-            this.btnImport.Name = "btnImport";
-            this.btnImport.Size = new System.Drawing.Size(114, 23);
-            this.btnImport.TabIndex = 4;
-            this.btnImport.Text = "Import";
-            this.btnImport.UseVisualStyleBackColor = true;
-            // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(674, 47);
+            this.btnExport.Location = new System.Drawing.Point(674, 12);
             this.btnExport.Name = "btnExport";
             this.btnExport.Size = new System.Drawing.Size(114, 23);
             this.btnExport.TabIndex = 5;
@@ -189,7 +179,7 @@
             // 
             // btnAddSpreadsheet
             // 
-            this.btnAddSpreadsheet.Location = new System.Drawing.Point(674, 76);
+            this.btnAddSpreadsheet.Location = new System.Drawing.Point(674, 41);
             this.btnAddSpreadsheet.Name = "btnAddSpreadsheet";
             this.btnAddSpreadsheet.Size = new System.Drawing.Size(114, 23);
             this.btnAddSpreadsheet.TabIndex = 16;
@@ -214,7 +204,6 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textName);
             this.Controls.Add(this.btnExport);
-            this.Controls.Add(this.btnImport);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textVersion);
             this.Controls.Add(this.label1);
@@ -232,7 +221,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textVersion;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.TextBox textName;
         private System.Windows.Forms.Label label3;

@@ -78,13 +78,13 @@ namespace SimsigImporterLib.Models
         /// Gets or sets a value indicating whether this train uses freight speed limits. Use -1 for true and 0 for false!
         /// Copied from train type and can be overridden
         /// </summary>
-        public int IsFreight { get; set; } = -1;
+        public NumericBool IsFreight { get; set; } = false;
 
         /// <summary>
         /// Gets or sets a value indicating whether this train can use goods lines. Use -1 for true and 0 for false!
         /// Copied from train type and can be overridden
         /// </summary>
-        public int CanUseGoodsLines { get; set; } = -1;
+        public NumericBool CanUseGoodsLines { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the train length in metres. Copied from train type and can be overridden
