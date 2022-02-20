@@ -2,7 +2,9 @@
 using SimsigImporterLib.Helpers;
 using SimsigImporterLib.Models;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SimsigImporter
@@ -19,6 +21,11 @@ namespace SimsigImporter
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Handle the export button click by attempting to write the current timetable to user-selected file
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnExport_Click(object sender, EventArgs e)
         {
             timeTable.ID = comboSim.SelectedItem.ToString();
@@ -50,10 +57,39 @@ namespace SimsigImporter
             }
 
             var exporter = new SimsigExporter();
-            exporter.Export(timeTable, path);
-            MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            if ( comboDays.SelectedItem.ToString() == "All - single TT" )
+            {
+                exporter.Export(timeTable, path);
+                MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if (comboDays.SelectedItem.ToString() == "All - separate TTs")
+            {
+
+            }
+            else
+            {
+                // Specific day so clone and filter the timetables from the main timetable
+                var dayCode = comboDays.SelectedItem.ToString().ToDayCode();
+                var filteredTt = timeTable.Clone();
+                filteredTt.Timetables = new List<Timetable>(timeTable.Timetables.Where(tt => tt.Days.ContainsDay(dayCode)));
+                if (filteredTt.Timetables.Count == 0)
+                {
+                    MessageBox.Show("No workings to export for selected day", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                else
+                {
+                    exporter.Export(filteredTt, path);
+                    MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
+        /// <summary>
+        /// Click handler for adding an input spreadsheet with simplified timetable
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnAddSpreadsheet_Click(object sender, EventArgs e)
         {
             // Show file chooser and send to importer
@@ -91,16 +127,26 @@ namespace SimsigImporter
             }
         }
 
+        /// <summary>
+        /// Delegate for passing messages between the worker and the display dialog
+        /// </summary>
+        /// <param name="message"></param>
         public void LogWarning(string message)
         {
             progress.AddMessage(message, Color.DarkOrange);
         }
 
+        /// <summary>
+        /// Delegate for passing messages between the worker and the display dialog
+        /// </summary>
         public void LogError(string message)
         {
             progress.AddMessage(message, Color.DarkRed);
         }
 
+        /// <summary>
+        /// Delegate for passing messages between the worker and the display dialog
+        /// </summary>
         public void LogInfo(string message)
         {
             progress.AddMessage(message, Color.Black);

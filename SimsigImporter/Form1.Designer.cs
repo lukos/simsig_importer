@@ -44,6 +44,8 @@
             this.textTemplate = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.btnAddSpreadsheet = new System.Windows.Forms.Button();
+            this.comboDays = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboSim
@@ -195,11 +197,41 @@
             this.btnAddSpreadsheet.UseVisualStyleBackColor = true;
             this.btnAddSpreadsheet.Click += new System.EventHandler(this.btnAddSpreadsheet_Click);
             // 
+            // comboDays
+            // 
+            this.comboDays.FormattingEnabled = true;
+            this.comboDays.Items.AddRange(new object[] {
+            "All - single TT",
+            "All - separate TTs",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+            "Sunday"});
+            this.comboDays.Location = new System.Drawing.Point(461, 17);
+            this.comboDays.Name = "comboDays";
+            this.comboDays.Size = new System.Drawing.Size(121, 21);
+            this.comboDays.TabIndex = 17;
+            this.comboDays.Text = "All - single TT";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(385, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(70, 13);
+            this.label8.TabIndex = 18;
+            this.label8.Text = "Day to export";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.comboDays);
             this.Controls.Add(this.btnAddSpreadsheet);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.textTemplate);
@@ -241,6 +273,8 @@
         private System.Windows.Forms.TextBox textTemplate;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnAddSpreadsheet;
+        private System.Windows.Forms.ComboBox comboDays;
+        private System.Windows.Forms.Label label8;
     }
 }
 
