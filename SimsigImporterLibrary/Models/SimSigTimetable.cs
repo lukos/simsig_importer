@@ -36,5 +36,10 @@ namespace SimsigImporterLib.Models
         public List<TrainCategory> TrainCategories { get; set; } = new List<TrainCategory>();
 
         public List<Timetable> Timetables { get; set; } = new List<Timetable>();
+
+        public SimSigTimetable Clone()
+        {
+            return (SimSigTimetable)this.MemberwiseClone();
+        }
     }
 }

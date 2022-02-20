@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SimsigImporterLib.Models
 {
@@ -108,6 +109,13 @@ namespace SimsigImporterLib.Models
         /// The type of traction as copied from the train type, that this working enters with (since it might swap in-sim)
         /// </summary>
         public string StartTraction { get; set; }
+
+        /// <summary>
+        /// Gets or sets the day code for this working e.g. MO, MSX etc.
+        /// </summary>
+        /// <remarks>This is only used for exporting separate timetables and is not stored in the timetable except in the description</remarks>
+        [XmlIgnore]
+        public string Days { get; set; }
 
         #region Origin and destination - used for descriptions
 

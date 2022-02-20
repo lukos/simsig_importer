@@ -15,6 +15,9 @@ namespace SimsigImporterLib
         private readonly Action<string> warning;
         private readonly Action<string> error;
 
+        private static Regex trainId = new Regex("^[A-Z0-9]{8}$", RegexOptions.Compiled);
+        
+
         public SpreadsheetHelper(Action<string> info, Action<string> warning, Action<string> error)
         {
             this.info = info;
@@ -130,7 +133,7 @@ namespace SimsigImporterLib
             var rows = worksheet.Descendants<Row>().ToList();
 
             // Work out which rows are which
-            int headcodeRow = 0, powerRow = 0, seedsRow = 0, locationStartRow = 0, locationEndRow = 0;
+            int headcodeRow = 0, powerRow = 0, seedsRow = 0, locationStartRow = 0, locationEndRow = 0, daysRow = 0;
 
             for(int row = 1; row <= rows.Count; ++row)
             {
@@ -151,6 +154,10 @@ namespace SimsigImporterLib
                 if (GetCellValue(wbPart, worksheet, $"A{row}") == "Power")
                 {
                     powerRow = row; continue;
+                }
+                if (GetCellValue(wbPart, worksheet, $"A{row}") == "Days")
+                {
+                    daysRow = row; continue;
                 }
                 if (GetCellValue(wbPart, worksheet, $"A{row}") == "Seeds")
                 {
@@ -199,7 +206,7 @@ namespace SimsigImporterLib
                 {
                     continue;
                 }
-                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, headcodeRow, powerRow, seedsRow, locationStartRow, locationEndRow);
+                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, headcodeRow, powerRow, seedsRow, locationStartRow, locationEndRow, daysRow);
                 if ( timetable != null)
                 {
                     timetables.Add(timetable);
@@ -218,7 +225,7 @@ namespace SimsigImporterLib
         /// <summary>
         /// Attempts to parse an excel column to create a timetable object
         /// </summary>
-        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, int headcodeRow, int powerRow, int seedRow, int locationStartRow, int locationEndRow)
+        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, int headcodeRow, int powerRow, int seedRow, int locationStartRow, int locationEndRow, int daysRow)
         {
             var tt = new Timetable();
             try
@@ -226,6 +233,12 @@ namespace SimsigImporterLib
                 tt.ID = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{headcodeRow}");
                 tt.Category = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{powerRow}");     // We will relink these after loading them all
                 tt.SeedPoint = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{seedRow}");
+
+                var days = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{daysRow}");
+                if ( Validators.VerifyDayCode(days))
+                {
+                    tt.Days = days;
+                }
 
                 for (int row = locationStartRow; row <= locationEndRow; ++row)
                 {
@@ -446,8 +459,6 @@ namespace SimsigImporterLib
 
             return tcs;
         }
-
-        private static Regex trainId = new Regex("^[A-Z0-9]{8}$", RegexOptions.Compiled);
 
         /// <summary>
         /// Reads any seed groups from the sheet and returns them as a list of seed groups
