@@ -30,15 +30,15 @@
         {
             this.comboSim = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textVersion = new System.Windows.Forms.TextBox();
+            this.textVersion = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.textName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.textDesc = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.textStart = new System.Windows.Forms.TextBox();
-            this.textEnd = new System.Windows.Forms.TextBox();
+            this.textStart = new System.Windows.Forms.MaskedTextBox();
+            this.textEnd = new System.Windows.Forms.MaskedTextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textTemplate = new System.Windows.Forms.TextBox();
@@ -50,11 +50,14 @@
             // 
             this.comboSim.FormattingEnabled = true;
             this.comboSim.Items.AddRange(new object[] {
-            "wolverhampton"});
+            "wolverhampton",
+            "oxford",
+            "birmingham new stree"});
             this.comboSim.Location = new System.Drawing.Point(89, 17);
             this.comboSim.Name = "comboSim";
             this.comboSim.Size = new System.Drawing.Size(227, 21);
             this.comboSim.TabIndex = 0;
+            this.comboSim.Text = "wolverhampton";
             // 
             // label1
             // 
@@ -68,10 +71,11 @@
             // textVersion
             // 
             this.textVersion.Location = new System.Drawing.Point(89, 44);
+            this.textVersion.Mask = "0\\.0\\.0";
             this.textVersion.Name = "textVersion";
             this.textVersion.Size = new System.Drawing.Size(100, 20);
             this.textVersion.TabIndex = 2;
-            this.textVersion.Text = "5.5.5";
+            this.textVersion.Text = "100";
             // 
             // label2
             // 
@@ -129,18 +133,22 @@
             // textStart
             // 
             this.textStart.Location = new System.Drawing.Point(89, 360);
+            this.textStart.Mask = "00\\:00";
             this.textStart.Name = "textStart";
             this.textStart.Size = new System.Drawing.Size(100, 20);
             this.textStart.TabIndex = 10;
-            this.textStart.Text = "00:00";
+            this.textStart.Text = "0000";
+            this.textStart.ValidatingType = typeof(System.DateTime);
             // 
             // textEnd
             // 
             this.textEnd.Location = new System.Drawing.Point(299, 360);
+            this.textEnd.Mask = "00\\:00";
             this.textEnd.Name = "textEnd";
             this.textEnd.Size = new System.Drawing.Size(100, 20);
             this.textEnd.TabIndex = 11;
-            this.textEnd.Text = "27:00";
+            this.textEnd.Text = "2700";
+            this.textEnd.ValidatingType = typeof(System.DateTime);
             // 
             // label5
             // 
@@ -219,15 +227,15 @@
 
         private System.Windows.Forms.ComboBox comboSim;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textVersion;
+        private System.Windows.Forms.MaskedTextBox textVersion;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnExport;
         private System.Windows.Forms.TextBox textName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textDesc;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textStart;
-        private System.Windows.Forms.TextBox textEnd;
+        private System.Windows.Forms.MaskedTextBox textStart;
+        private System.Windows.Forms.MaskedTextBox textEnd;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textTemplate;

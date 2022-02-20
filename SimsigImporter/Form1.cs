@@ -56,6 +56,9 @@ namespace SimsigImporter
 
             var result = importer.Import(path);
 
+            LogInfo("=========================");
+            LogInfo("...All finished...");
+            LogInfo("=========================");
             progress.EnableButton();
             if ( result == null )
             {
