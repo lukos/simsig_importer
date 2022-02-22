@@ -263,7 +263,10 @@ namespace SimsigImporter
             comboSim.DataSource = new BindingSource(itemsDict, null);
             comboSim.DisplayMember = "Key";
             comboSim.ValueMember = "Value";
-            comboSim.SelectedValue = settings.SelectedSim;
+            if (settings.SelectedSim.IsPresent())
+            {
+                comboSim.SelectedValue = settings.SelectedSim;
+            }
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
