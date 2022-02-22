@@ -1,10 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
 
 namespace SimsigImporterLib.Helpers
 {
+    /// <summary>
+    /// Helper class for methods related to security or encryption
+    /// </summary>
     internal class Encryption
     {
         internal static readonly char[] chars =

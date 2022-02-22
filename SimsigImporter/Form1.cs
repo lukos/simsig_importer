@@ -67,23 +67,31 @@ namespace SimsigImporter
             }
             else if (comboDays.SelectedItem.ToString() == "All - separate TTs")
             {
-
+                new List<string> { "SUN", "M", "T", "W", "Th", "F", "S" }.ForEach(day =>
+                    ExportTimetableDay(exporter, timeTable, day, path.Replace(".wtt", " - " + day + ".wtt"))
+                );
+                MessageBox.Show("Timetables exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 // Specific day so clone and filter the timetables from the main timetable
                 var dayCode = comboDays.SelectedItem.ToString().ToDayCode();
-                var filteredTt = timeTable.Clone();
-                filteredTt.Timetables = new List<Timetable>(timeTable.Timetables.Where(tt => tt.Days.ContainsDay(dayCode)));
-                if (filteredTt.Timetables.Count == 0)
-                {
-                    MessageBox.Show("No workings to export for selected day", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-                else
-                {
-                    exporter.Export(filteredTt, path);
-                    MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                ExportTimetableDay(exporter, timeTable, dayCode, path);
+                MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void ExportTimetableDay(SimsigExporter exporter, SimSigTimetable timetable, string dayCode, string path)
+        {
+            var filteredTt = timeTable.Clone();
+            filteredTt.Timetables = new List<Timetable>(timeTable.Timetables.Where(tt => tt.Days.ContainsDay(dayCode)));
+            if (filteredTt.Timetables.Count == 0)
+            {
+                MessageBox.Show($"No workings to export for day {dayCode}", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                exporter.Export(filteredTt, path);
             }
         }
 

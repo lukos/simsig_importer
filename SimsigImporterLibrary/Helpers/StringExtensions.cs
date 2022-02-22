@@ -3,18 +3,36 @@ using System.Text.RegularExpressions;
 
 namespace SimsigImporterLib.Helpers
 {
+    /// <summary>
+    /// String extension methods
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// A much neater way of checking whether a string has a value
+        /// </summary>
+        /// <param name="input">The input to check</param>
+        /// <returns>True if the input is null or whitespace</returns>
         public static bool IsMissing(this string input)
         {
             return string.IsNullOrWhiteSpace(input);
         }
 
+        /// <summary>
+        /// A much neater way of checking whether a string has a value
+        /// </summary>
+        /// <param name="input">The input to check</param>
+        /// <returns>True if the input is not null/whitespace</returns>
         public static bool IsPresent(this string input)
         {
             return !string.IsNullOrWhiteSpace(input);
         }
 
+        /// <summary>
+        /// Takes a column number and turns it into the Excel column reference e.g. 1 => A
+        /// </summary>
+        /// <param name="columnNumber">The numeric 1-based column index</param>
+        /// <returns>The text-based Excel column</returns>
         public static string ToExcelColumn(this int columnNumber)
         {
             return columnNumber > 26 ? Convert.ToChar(64 + (columnNumber / 26)).ToString() + Convert.ToChar(64 + (columnNumber % 26)) : Convert.ToChar(64 + columnNumber).ToString();
@@ -22,6 +40,11 @@ namespace SimsigImporterLib.Helpers
 
         private static Regex simsigTime = new Regex("[0-9]{2}:?[0-9]{2}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Converts a 4 digit time into simsig time, which is seconds after midnight
+        /// </summary>
+        /// <param name="input">The input as read from input file</param>
+        /// <returns>A number of seconds after midnight</returns>
         public static int ToSimsigTime(this string input)
         {
             if (!simsigTime.IsMatch(input))

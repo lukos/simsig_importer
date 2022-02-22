@@ -9,7 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimsigImporterLibrary", "Si
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SimsigInstaller", "SimsigInstaller\SimsigInstaller.vdproj", "{4EBBC2BE-F248-4A80-98D0-4294C4D8E45C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimsigImporter.Tests.Unit", "SimsigImporter.Tests.Unit\SimsigImporter.Tests.Unit.csproj", "{C553D425-A844-4369-A01D-E56340CB6926}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimsigImporter.Tests.Unit", "SimsigImporter.Tests.Unit\SimsigImporter.Tests.Unit.csproj", "{C553D425-A844-4369-A01D-E56340CB6926}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B308537A-D654-4FBF-BC89-45544949AD76}"
+	ProjectSection(SolutionItems) = preProject
+		SimSigExport.xlsx = SimSigExport.xlsx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
