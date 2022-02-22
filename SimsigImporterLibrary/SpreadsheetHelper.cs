@@ -74,19 +74,34 @@ namespace SimsigImporterLib
                     warning("No train types found in spreadsheet, all services will have custom settings");
                 }
 
-                Sheet ttSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable");
+                Sheet ttSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Up");
                 if ( ttSheet == null )
                 {
-                    error("No timetable found in spreadsheet. The sheet needs to be called Timetable");
+                    error("No Up timetable found in spreadsheet. The sheet needs to be called Timetable Up");
                     return null;
                 }
                 tt.Timetables = ProcessTimetable(doc, ttSheet, tt);
 
                 if(tt.Timetables == null)
                 {
-                    error("No timetables found in timetable sheet. Possible formatting error.");
+                    error("No timetables found in Up timetable sheet. Possible formatting error.");
                     return null;
                 }
+
+                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
+                if (ttSheet2 == null)
+                {
+                    error("No Down timetable found in spreadsheet. The sheet needs to be called Timetable Down");
+                    return null;
+                }
+                var downTt = ProcessTimetable(doc, ttSheet2, tt);
+
+                if (downTt == null)
+                {
+                    error("No timetables found in Down timetable sheet. Possible formatting error.");
+                    return null;
+                }
+                tt.Timetables.AddRange(downTt);
 
                 info("Mapping timetables to their train type");
                 foreach(var working in tt.Timetables)

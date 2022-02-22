@@ -46,6 +46,7 @@
             this.btnAddSpreadsheet = new System.Windows.Forms.Button();
             this.comboDays = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.btnReset = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // comboSim
@@ -221,11 +222,22 @@
             this.label8.TabIndex = 18;
             this.label8.Text = "Day to export";
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(674, 69);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(114, 23);
+            this.btnReset.TabIndex = 19;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.comboDays);
             this.Controls.Add(this.btnAddSpreadsheet);
@@ -272,6 +284,7 @@
         private System.Windows.Forms.Button btnAddSpreadsheet;
         private System.Windows.Forms.ComboBox comboDays;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
