@@ -51,15 +51,11 @@
             // comboSim
             // 
             this.comboSim.FormattingEnabled = true;
-            this.comboSim.Items.AddRange(new object[] {
-            "wolverhampton",
-            "oxford",
-            "birmingham new stree"});
             this.comboSim.Location = new System.Drawing.Point(89, 17);
             this.comboSim.Name = "comboSim";
             this.comboSim.Size = new System.Drawing.Size(227, 21);
             this.comboSim.TabIndex = 0;
-            this.comboSim.Text = "wolverhampton";
+            this.comboSim.Text = "Wolverhampton";
             // 
             // label1
             // 
@@ -250,6 +246,7 @@
             this.Controls.Add(this.comboSim);
             this.Name = "Form1";
             this.Text = "Simsig Timetable Importer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

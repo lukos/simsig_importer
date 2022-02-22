@@ -58,6 +58,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImporterSettings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressDialog.cs">
       <SubType>Form</SubType>

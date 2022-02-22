@@ -11,6 +11,7 @@ namespace SimsigImporter
 {
     public partial class Form1 : Form
     {
+        private ImporterSettings settings = new ImporterSettings();
         private SimSigTimetable timeTable = new SimSigTimetable();
         private ProgressDialog progress = new ProgressDialog();
         private Guid saveDialogGuid = Guid.NewGuid();
@@ -19,6 +20,7 @@ namespace SimsigImporter
         public Form1()
         {
             InitializeComponent();
+            PopulateSimDropdown();
         }
 
         /// <summary>
@@ -150,6 +152,117 @@ namespace SimsigImporter
         public void LogInfo(string message)
         {
             progress.AddMessage(message, Color.Black);
+        }
+
+        private void PopulateSimDropdown()
+        {
+            var itemsDict = new Dictionary<string, string>(100);
+
+            itemsDict.Add("Aston", "aston");
+            itemsDict.Add("Birmingham New Stree", "birmingham new street");
+            itemsDict.Add("Brighton", "brighton");
+            itemsDict.Add("Cardiff", "cardiff");
+            itemsDict.Add("Cardiff Valleys", "cardiffvalleys");
+            itemsDict.Add("Cardiff Vale of Glamorgan", "cardiffvog");
+            itemsDict.Add("Carlisle", "carlisle");
+            itemsDict.Add("Cathcart", "cathcart");
+            itemsDict.Add("Cheshire Lines", "cheshirelines");
+            itemsDict.Add("Chester", "chester");
+            itemsDict.Add("Chicago Loop", "chicagoloop");
+            itemsDict.Add("Coventry", "coventry");
+            itemsDict.Add("Cowlairs", "cowlairs");
+            itemsDict.Add("Central Scotland", "cscot");
+            itemsDict.Add("Derby", "derby");
+            itemsDict.Add("Doncaster North", "doncasternorth");
+            itemsDict.Add("East Coastway", "eastcoastway");
+            itemsDict.Add("Edge Hill", "edgehill");
+            itemsDict.Add("Edinburgh", "edinburgh");
+            itemsDict.Add("Exeter", "exeter");
+            itemsDict.Add("Feltham", "feltham");
+            itemsDict.Add("Fenchurch Street", "fenchurch");
+            itemsDict.Add("Hereford", "hereford");
+            itemsDict.Add("Hong Kong East", "hongkongeast");
+            itemsDict.Add("Horsham", "horsham");
+            itemsDict.Add("Huddersfield", "huddersfield");
+            itemsDict.Add("Hunts Cross", "huntscross");
+            itemsDict.Add("Huyton", "huyton");
+            itemsDict.Add("Kings Cross", "kingsx");
+            itemsDict.Add("Lancing", "lancing");
+            itemsDict.Add("Leamington Spa", "leamington");
+            itemsDict.Add("Leeds Ardsley", "leedsa");
+            itemsDict.Add("Leeds East/West", "leedsew");
+            itemsDict.Add("Leeds Northwest", "leedsnw");
+            itemsDict.Add("Liverpool Lime Street", "limest");
+            itemsDict.Add("Liverpool Street", "livst");
+            itemsDict.Add("Llangollen", "llangollen");
+            itemsDict.Add("London Bridge", "londonbridgeasc");
+            itemsDict.Add("London Bridge Mini", "londonbridgemini");
+            itemsDict.Add("London, Tilbury and Southend", "lts");
+            itemsDict.Add("Maidstone East", "maideast");
+            itemsDict.Add("Manchester East", "manchestereast");
+            itemsDict.Add("Manchester North", "manchesternorth");
+            itemsDict.Add("Manchester Piccadilly", "manchesterpiccadilly");
+            itemsDict.Add("Manchester South", "manchestersouth");
+            itemsDict.Add("Marylebone", "marylebone");
+            itemsDict.Add("Moss Vale NSW", "moss_vale_nsw");
+            itemsDict.Add("Motherwell", "motherwell");
+            itemsDict.Add("North East Scotland", "nescot");
+            itemsDict.Add("North East Wales", "newales");
+            itemsDict.Add("Newport", "newport");
+            itemsDict.Add("North Wales Coast", "north_wales_coast");
+            itemsDict.Add("Oxford", "oxford");
+            itemsDict.Add("Oxted", "oxted");
+            itemsDict.Add("Paisley", "paisley");
+            itemsDict.Add("Peak District", "peakdistrict");
+            itemsDict.Add("Penzance", "penzance");
+            itemsDict.Add("Peterborough", "peterborough");
+            itemsDict.Add("Plymouth", "plymouth");
+            itemsDict.Add("Portsmouth", "portsmouth");
+            itemsDict.Add("Post Talbot", "porttalbot");
+            itemsDict.Add("Royston", "royston");
+            itemsDict.Add("Rugby Centre", "rugbycentre");
+            itemsDict.Add("Rugby North", "rugbynorth");
+            itemsDict.Add("Rugby South", "rugbysouth");
+            itemsDict.Add("Salisbury", "salisbury");
+            itemsDict.Add("Saltley", "saltley");
+            itemsDict.Add("Sandhills", "sandhills");
+            itemsDict.Add("Sheffield", "sheffield");
+            itemsDict.Add("Shrewsbury", "shrewsbury");
+            itemsDict.Add("Stafford", "stafford");
+            itemsDict.Add("Staffordshire", "staffordshire");
+            itemsDict.Add("Stockport", "stockport");
+            itemsDict.Add("Strathfield", "strathfield");
+            itemsDict.Add("Swindon", "swindid");
+            itemsDict.Add("Three Bridges", "threebridges");
+            itemsDict.Add("Tyneside", "tyneside");
+            itemsDict.Add("Victoria", "victoria");
+            itemsDict.Add("Victoria Central", "victoriac");
+            itemsDict.Add("Victoria South Eastern", "victoriaeast");
+            itemsDict.Add("West Anglia", "warm");
+            itemsDict.Add("Warrington", "warringtonpsb");
+            itemsDict.Add("Waterloo", "waterloo");
+            itemsDict.Add("Watford Junction", "watfordjn");
+            itemsDict.Add("Wembley", "wembley");
+            itemsDict.Add("Wembley Sub", "wembleysub");
+            itemsDict.Add("Westbury", "westbury");
+            itemsDict.Add("West Hampstead", "westhampstead");
+            itemsDict.Add("West Yorkshire", "westyorkshire");
+            itemsDict.Add("Wigan Wallgate", "wigan");
+            itemsDict.Add("Wimbledon", "wimbledon");
+            itemsDict.Add("Wolverhampton", "wolverhampton");
+            itemsDict.Add("York North/South", "yorkns");
+
+            comboSim.DataSource = new BindingSource(itemsDict, null);
+            comboSim.DisplayMember = "Key";
+            comboSim.ValueMember = "Value";
+            comboSim.SelectedValue = settings.SelectedSim;
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            var value = ((KeyValuePair<string, string>)comboSim.SelectedItem).Value;
+            settings.SelectedSim = value;
+            settings.Save();
         }
     }
 }
