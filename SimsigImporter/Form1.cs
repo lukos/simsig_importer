@@ -30,7 +30,7 @@ namespace SimsigImporter
         /// <param name="e"></param>
         private void btnExport_Click(object sender, EventArgs e)
         {
-            timeTable.ID = comboSim.SelectedItem.ToString();
+            timeTable.ID = comboSim.SelectedValue.ToString();
             timeTable.Version = textVersion.Text;
             timeTable.Name = textName.Text;
             timeTable.Description = textDesc.Text;
@@ -263,6 +263,14 @@ namespace SimsigImporter
             var value = ((KeyValuePair<string, string>)comboSim.SelectedItem).Value;
             settings.SelectedSim = value;
             settings.Save();
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("This will remove any imported spreadsheets. Do you want to continue?", "Confirm", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                timeTable = new SimSigTimetable();
+            }
         }
     }
 }
