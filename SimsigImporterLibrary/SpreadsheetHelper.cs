@@ -29,99 +29,145 @@ namespace SimsigImporterLib
         /// Imports a simplified timetable file into memory
         /// </summary>
         /// <param name="fileName">The filename to open</param>
+        /// <param name="tt">The existing timetable to add to</param>
         /// <returns></returns>
-        public SimSigTimetable Import(string fileName)
+        public SimSigTimetable Import(string fileName, SimSigTimetable tt)
         {
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(fileName, false))
             {
-                if (doc.WorkbookPart.Workbook.Sheets.ChildElements.Count < 2)
-                {
-                    error("not enough sheets in spreadsheet");
-                    return null;
-                }
-                
-                var tt = new SimSigTimetable();
-
+                /////////////////////////////////
+                //
+                // Seed groups
+                //
+                /////////////////////////////////
                 Sheet sgSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Seed Groups");
                 if (sgSheet != null)
                 {
                     info("Parsing seed groups");
-                    tt.SeedGroups = ProcessSeedGroups(doc, sgSheet);
-                    if (tt.SeedGroups == null)
+                    var groups = ProcessSeedGroups(doc, sgSheet);
+                    if (groups == null)
                     {
                         error("Error processing seed groups tab");
                         return null;
                     }
+                    tt.SeedGroups.AddRange(groups);
                 }
                 else
                 {
                     warning("No seed groups found in spreadsheet, skipping");
                 }
 
+                /////////////////////////////////
+                //
+                // Train types
+                //
+                /////////////////////////////////
                 Sheet trainsSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Train Types");
                 if (trainsSheet != null)
                 {
                     info("Parsing train types");
-                    tt.TrainCategories = ProcessTrainTypes(doc, trainsSheet);
-                    if (tt.TrainCategories == null)
+                    var trainTypes = ProcessTrainTypes(doc, trainsSheet);
+                    if (trainTypes == null)
                     {
                         error("Error processing train types tab");
                         return null;
                     }
+                    tt.TrainCategories.AddRange(trainTypes);
                 }
                 else
                 {
                     warning("No train types found in spreadsheet, all services will have custom settings");
                 }
 
+                /////////////////////////////////
+                //
+                // Up timetable
+                //
+                /////////////////////////////////
                 Sheet ttSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Up");
-                if ( ttSheet == null )
+                if (ttSheet == null)
                 {
-                    error("No Up timetable found in spreadsheet. The sheet needs to be called Timetable Up");
-                    return null;
+                    warning("No Up timetable found in spreadsheet. The sheet needs to be called Timetable Up");
                 }
-                tt.Timetables = ProcessTimetable(doc, ttSheet, tt);
-
-                if(tt.Timetables == null)
+                else
                 {
-                    warning("No timetables found in Up timetable sheet. Possible formatting error. Ignoring");
-                    tt.Timetables = new List<Timetable>();
-                }
+                    var upTTs = ProcessTimetable(doc, ttSheet, tt);
 
-                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
-                if (ttSheet2 == null)
-                {
-                    error("No Down timetable found in spreadsheet. The sheet needs to be called Timetable Down");
-                    return null;
-                }
-                var downTt = ProcessTimetable(doc, ttSheet2, tt);
-
-                if (downTt == null)
-                {
-                    warning("No timetables found in Down timetable sheet. Possible formatting error. Ignoring");
-                }
-                tt.Timetables.AddRange(downTt);
-
-                info("Mapping timetables to their train type");
-                foreach(var working in tt.Timetables)
-                {
-                    if(tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
+                    if (upTTs == null)
                     {
-                        var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
-                        working.Category = trainData.ID;
-                        // Train data is copied across (denormalised) to the working even though it has the reference above
-                        working.TrainLength = trainData.TrainLength;
-                        working.AccelBrakeIndex = trainData.AccelBrakeIndex;
-                        working.MaxSpeed = trainData.MaxSpeed;
-                        working.SpeedClass = trainData.SpeedClass;
-                        working.IsFreight = trainData.IsFreight;
-                        working.CanUseGoodsLines = trainData.CanUseGoodsLines;
-                        working.Electrification = trainData.Electrification;
-                        working.StartTraction = trainData.Electrification;
+                        warning("No timetables found in Up timetable sheet. Possible formatting error. Ignoring");
                     }
                     else
                     {
-                        warning($"Could not find train type for ID {working.Category}");
+                        tt.Timetables.AddRange(upTTs);
+                        info("Mapping timetables to their train type");
+                        foreach (var working in upTTs)
+                        {
+                            if (tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
+                            {
+                                var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
+                                working.Category = trainData.ID;
+                                // Train data is copied across (denormalised) to the working even though it has the reference above
+                                working.TrainLength = trainData.TrainLength;
+                                working.AccelBrakeIndex = trainData.AccelBrakeIndex;
+                                working.MaxSpeed = trainData.MaxSpeed;
+                                working.SpeedClass = trainData.SpeedClass;
+                                working.IsFreight = trainData.IsFreight;
+                                working.CanUseGoodsLines = trainData.CanUseGoodsLines;
+                                working.Electrification = trainData.Electrification;
+                                working.StartTraction = trainData.Electrification;
+                            }
+                            else
+                            {
+                                warning($"Could not find train type for ID {working.Category}");
+                            }
+                        }
+                    }
+                }
+
+                /////////////////////////////////
+                //
+                // Down timetable
+                //
+                /////////////////////////////////
+                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
+                if (ttSheet2 == null)
+                {
+                    warning("No Down timetable found in spreadsheet. The sheet needs to be called Timetable Down");
+                }
+                else
+                {
+                    var downTt = ProcessTimetable(doc, ttSheet2, tt);
+
+                    if (downTt == null)
+                    {
+                        warning("No timetables found in Down timetable sheet. Possible formatting error. Ignoring");
+                    }
+                    else
+                    {
+                        tt.Timetables.AddRange(downTt);
+                        info("Mapping timetables to their train type");
+                        foreach (var working in downTt)
+                        {
+                            if (tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
+                            {
+                                var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
+                                working.Category = trainData.ID;
+                                // Train data is copied across (denormalised) to the working even though it has the reference above
+                                working.TrainLength = trainData.TrainLength;
+                                working.AccelBrakeIndex = trainData.AccelBrakeIndex;
+                                working.MaxSpeed = trainData.MaxSpeed;
+                                working.SpeedClass = trainData.SpeedClass;
+                                working.IsFreight = trainData.IsFreight;
+                                working.CanUseGoodsLines = trainData.CanUseGoodsLines;
+                                working.Electrification = trainData.Electrification;
+                                working.StartTraction = trainData.Electrification;
+                            }
+                            else
+                            {
+                                warning($"Could not find train type for ID {working.Category}");
+                            }
+                        }
                     }
                 }
 
