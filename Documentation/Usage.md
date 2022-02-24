@@ -1,7 +1,7 @@
 # Usage instructions
-There is a sample spreadsheet in the project that can be used as a starting point. There is some flexibility as described below but the important points are that the individual sheets are given the specific names "Train Types", "Timetable" and "Seed Groups" although only Timetable is mandatory. Any other sheets, that you might be using to work things out, will simply be ignored.
+There is a sample spreadsheet in the project that can be used as a starting point. There is some flexibility as described below but the important points are that the individual sheets are given the specific names "Train Types", "Timetable Up", "Timetable Down" and "Seed Groups" although none are mandatory mandatory. Any other sheets that you might be using to work things out, will simply be ignored.
 
-We will probably look at making none of the sheets mandatory in the future to allow you to layer various documents on top of each other, e.g. you might have a standard list of train types which instead of copying and pasting you could import first before then importing various iterations of timetables.
+You can import multiple spreadsheets which will help with trains that do not simply travel in the up or down direction but perhaps go around a chord and change. Other timetables need to be in the same general format but you can use whichever locations are necessary (and mandatory for simsig) to ensure that trains are always read from top to bottom since this is the order that their locations are added. Additional sheets can link to train types and seed groups previously imported but you cannot link a timetable to a train type that is not yet imported so import those first!
 
 ## Seed groups
 Seed groups are very straight-forward. Add a unique id to tie it to a working on the timetable sheet and then just fill in the mandatory start time and the optional title.
@@ -11,7 +11,7 @@ Train Types are also quite self-explanatory but don't move or change the orange 
 
 If you need more rows of dropdowns on the trains page, simply find a good row and copy it downwards, which will copy the dropdowns.
 
-Note we cannot easily support multiple speed classes or electrifications, so you will have to pick a single one and then edit it in simsig afterwards.
+Note we cannot easily support multiple speed classes or electrifications, so you will have to pick a single one and then edit it in simsig afterwards if necessary.
 
 ## Dwell times
 These are currently not supported in the importer
@@ -24,7 +24,7 @@ The layout is from left-to-right with a single row of workings, which follows wh
 You need to have the row headings in column A on the timetable but you are permitted to use any number of blank rows between them, except that the locations cannot have any blank lines in them. The special row headings are:
 
 * Headcode - the ID of the train e.g. 1H10
-* Power - the ID of the train type used for this service at entry/start
+* Power - the ID of the "train type" used for this service at entry/start - if this is not found in the list of train types, it will have "custom" settings but these are set to 0 by default so will need editing later
 * Days - this will allow us to generate timetables for each day automatically and needs to follow standard naming like SO or MSX
 * Seeds - If set is the location to seed the train at. This will be simulation specific and might be a singal number like S39
 
@@ -55,6 +55,9 @@ Codes
 * DEF - Detach engine (front)
 * DCR - Drop coaches (rear)
 * DCF - Drop coaches (front)
+
+### Engineering/Pathing Allowances
+You can add engineering or pathing allowances for a location really easily. Add another row underneath the location you want to add allowances for and make sure there is a code in the first column so there are no gaps in the list of locations. It doesn't actually matter what is in column 1 but you might as well copy the location code from above. In the blank row, you can use bracket numbers like (2) to indicate a pathing allowance of 2 minutes and/or a square bracketed [4] to indicate an engineering allowance. There is an example in the provided spreadsheet in the Up trains under 1V44.
 
 ### Difficult workings
 Some of the more complex features of a timetable are not easy to handle in a spreadsheet. For example, a train might logically reverse somewhere and go from Up to Down or vice-versa. Although this might be physically possible in the simulation (e.g. going round a chord onto another line), these cannot be represented easily in the working timetable and usually appear as multiple entries, one for the up part(s) and another for the down part(s).

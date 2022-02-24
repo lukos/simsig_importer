@@ -49,5 +49,15 @@ namespace SimsigImporterLib.Models
         /// Gets or sets any optional activities that take place at this location
         /// </summary>
         public List<Activity> Activities { get; set; }
+
+        /// <summary>
+        /// Gets or sets the engineering time allowance which is stored in 30 second increments e.g. 1 minute is stored as 2
+        /// </summary>
+        public int? EngAllowance { get; set; }
+
+        /// <summary>
+        /// Gets or sets the pathing time allowance which is stored in 30 second increments e.g. 1 minute is stored as 2
+        /// </summary>
+        public int? PathAllowance { get; set; }
     }
 }

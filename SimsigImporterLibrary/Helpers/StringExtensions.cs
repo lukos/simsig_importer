@@ -115,5 +115,17 @@ namespace SimsigImporterLib.Helpers
                 return day != "SUN" && input.EndsWith("X");
             }
         }
+
+        /// <summary>
+        /// Converts a string to a nullable int
+        /// </summary>
+        /// <param name="s">The input string</param>
+        /// <returns>The int value if it parses, otherwise null</returns>
+        public static int? ToNullableInt(this string s)
+        {
+            int i;
+            if (int.TryParse(s, out i)) return i;
+            return null;
+        }
     }
 }
