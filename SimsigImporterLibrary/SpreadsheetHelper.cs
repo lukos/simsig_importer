@@ -340,11 +340,18 @@ namespace SimsigImporterLib
 
                         var trip = new Trip
                         {
-                            Location = location,
+                            Location = location.StartsWith("#") ? location.Substring(1) : location,
                             ArrTime = isBold ? (int?)(cellContents.ToSimsigTime() - 60) : null,
                             DepPassTime = cellContents.ToSimsigTime(),
                             IsPassTime = !isBold
                         };
+                        // Check for allowances
+                        var nextCell = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row+1}");
+                        if ( HasAllowances(trip, nextCell))
+                        { 
+                            ++row;
+                        }
+
                         tt.Trips.Add(trip);
                     }
                     else
@@ -394,6 +401,12 @@ namespace SimsigImporterLib
                             {
                                 trip.DepPassTime = cellContents.ToSimsigTime();
                             }
+                            // Check for allowances
+                            var nextCell = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row + 1}");
+                            if (HasAllowances(trip, nextCell))
+                            {
+                                ++row;
+                            }
                         }
                         tt.Trips.Add(trip);
                     }
@@ -402,10 +415,44 @@ namespace SimsigImporterLib
             }
             catch(Exception)
             {
-                warning("Cannot read timetable column {workCol.ToExcelColumn()}. Ignoring");
+                warning($"Cannot read timetable column {workCol.ToExcelColumn()}. Ignoring");
                 return null;
             }
             return tt;
+        }
+
+        /// <summary>
+        /// Check whether the cell below this timing mark has allowances
+        /// </summary>
+        /// <param name="trip">The current trip entry</param>
+        /// <param name="nextCell">The cell contents below the current timing mark</param>
+        /// <returns>True if we manage to extract allowances, otherwise false</returns>
+        private bool HasAllowances(Trip trip, string nextCell)
+        {
+            if (nextCell == null)
+                return false;
+
+            // Get timing data
+            var content = Regex.Match(nextCell, @"(\(([0-9]{1,2})\))");
+            if (content.Groups.Count == 3)
+            {
+                trip.PathAllowance = content.Groups[2].Value.ToNullableInt();
+                if (trip.PathAllowance != null)
+                {
+                    trip.PathAllowance = trip.PathAllowance.Value * 2;
+                }
+            }
+
+            content = Regex.Match(nextCell, @"(\[([0-9]{1,2})\])");
+            if (content.Groups.Count == 3)
+            {
+                trip.EngAllowance = content.Groups[2].Value.ToNullableInt();
+                if (trip.EngAllowance != null)
+                {
+                    trip.EngAllowance = trip.EngAllowance.Value * 2;
+                }
+            }
+            return trip.PathAllowance.HasValue || trip.EngAllowance.HasValue;
         }
 
         /// <summary>
