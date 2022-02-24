@@ -84,8 +84,8 @@ namespace SimsigImporterLib
 
                 if(tt.Timetables == null)
                 {
-                    error("No timetables found in Up timetable sheet. Possible formatting error.");
-                    return null;
+                    warning("No timetables found in Up timetable sheet. Possible formatting error. Ignoring");
+                    tt.Timetables = new List<Timetable>();
                 }
 
                 Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
@@ -98,8 +98,7 @@ namespace SimsigImporterLib
 
                 if (downTt == null)
                 {
-                    error("No timetables found in Down timetable sheet. Possible formatting error.");
-                    return null;
+                    warning("No timetables found in Down timetable sheet. Possible formatting error. Ignoring");
                 }
                 tt.Timetables.AddRange(downTt);
 
@@ -197,7 +196,7 @@ namespace SimsigImporterLib
 
             // Find the first working column, must be in the first 10 columns, otherwise that will be ridiculous
             var workingColumn = 1;
-            for(int firstCol = 2; firstCol < 10; ++firstCol)
+            for(int firstCol = 3; firstCol < 10; ++firstCol)
             {
                 if (GetCellValue(wbPart, worksheet, $"{firstCol.ToExcelColumn()}{headcodeRow}").IsPresent())
                 {
@@ -205,9 +204,9 @@ namespace SimsigImporterLib
                     break;
                 }
             }
-            if ( workingColumn == 0)
+            if ( workingColumn == 1)
             {
-                error("Cannot find a working in the Headcode row of Timetable sheet");
+                warning("Cannot find a working in the Headcode row of Timetable sheet");
                 return null;
             }
 
