@@ -121,7 +121,7 @@ namespace SimsigImporter
             progress = new ProgressDialog();
             progress.Show();
 
-            var result = importer.Import(path);
+            var result = importer.Import(path, timeTable);
 
             LogInfo("=========================");
             LogInfo("...All finished...");
