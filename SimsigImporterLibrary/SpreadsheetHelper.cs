@@ -212,8 +212,8 @@ namespace SimsigImporterLib
             }
 
             var timetables = new List<Timetable>();
-            var columnCount = worksheet.Descendants<Row>().FirstOrDefault()?.ChildElements.Count;
-            for (int workCol = workingColumn; workCol <= columnCount.GetValueOrDefault(); ++workCol)
+            var columnCount = worksheet.Descendants<Row>().Max(r => r.ChildElements.Count);
+            for (int workCol = workingColumn; workCol <= columnCount; ++workCol)
             {
                 // Attempt to process a timetable in each column on the sheet. Note that it is possible there are extra blank columns
                 // and others with random stuff so just look for headcode content
