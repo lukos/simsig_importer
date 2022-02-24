@@ -461,6 +461,10 @@ namespace SimsigImporterLib
                         AccelBrakeIndex = TrainCategory.ParseAccelBrakeIndex(GetCellValue(wbPart, worksheet, $"I{row}")),
                         PowerToWeightCategory = TrainCategory.ParsePowerToWeight(GetCellValue(wbPart, worksheet, $"J{row}"))
                     };
+                    if ( tcs.Any(t => t.SheetId == tc.SheetId))
+                    {
+                        warning($"Duplicate train {tc.SheetId} found. Linking might not work as expected");
+                    }
                     tcs.Add(tc);
                     ++row;
                 }
