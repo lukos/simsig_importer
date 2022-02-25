@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using SimsigImporterLib.Helpers;
 using SimsigImporterLib.Models;
@@ -422,6 +423,175 @@ namespace SimsigImporterLib
         }
 
         /// <summary>
+        /// Writes the given location data to the template spreadsheet
+        /// </summary>
+        /// <param name="path">The path to the new file</param>
+        /// <param name="data">The location data to write</param>
+        public void WriteLocations(string path, Template data)
+        {
+            using (SpreadsheetDocument doc = SpreadsheetDocument.Open(path, true))
+            {
+                // Find the two timetable tables and the "INSERTHERE" text and write the locations in opposite order
+                Sheet ttSheet1 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Up");
+                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
+                if (ttSheet1 == null || ttSheet2 == null)
+                {
+                    error("Could not find one or both timetable sheets in template, exiting");
+                    return;
+                }
+
+                WorkbookPart wbPart = doc.WorkbookPart;
+                var shareStringPart = wbPart.GetPartsOfType<SharedStringTablePart>().First();
+
+
+                WorksheetPart wsPart = (WorksheetPart)wbPart.GetPartById(ttSheet1.Id);
+                Worksheet worksheet = wsPart.Worksheet;
+                var rows = worksheet.Descendants<Row>().ToList();
+
+                // Work out which row to insert
+                uint insertRow = 0;
+
+                for (uint row = 1; row <= rows.Count; ++row)
+                {
+                    var contents = GetCellValue(wbPart, worksheet, $"A{row}");
+                    if (contents.IsPresent() && contents == "INSERTHERE")
+                    {
+                        insertRow = row;
+                    }
+                }
+
+                if ( insertRow == 0 )
+                {
+                    error("No insert point in up timetable sheet. Exiting");
+                    return;
+                }
+
+                var currentRow = insertRow;
+                // Up direction
+                for (uint index = 0; index < data.Locations.Length; ++index)
+                {
+                    var location = data.Locations[index];
+                    if (location.Direction == "Down")
+                        continue;
+
+                    var code = location.UpEntry ? "#" + location.Code : location.Code;
+
+                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+
+                    if (!location.ArrDep)
+                    {
+                        // Arr/dep is the only thing that splits the lines so if you don't have it, write the location name
+                        // and move on
+                        AddLocationData(shareStringPart, wsPart, location.Name, "B", currentRow);
+                        ++currentRow;
+                        continue;
+                    }
+
+                    if ( location.Path )
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    if (location.Plat)
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    if (location.Line)
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    // We have arr/dep if we get this far so should be easy now!
+                    AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
+                    ++currentRow;
+                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
+                    ++currentRow;
+                }
+
+                // Now for the down timetable sheet. Same thing but in the reverse order and logic *very* slightly different
+                wsPart = (WorksheetPart)wbPart.GetPartById(ttSheet2.Id);
+                worksheet = wsPart.Worksheet;
+                rows = worksheet.Descendants<Row>().ToList();
+
+                // Work out which row to insert
+                insertRow = 0;
+
+                for (uint row = 1; row <= rows.Count; ++row)
+                {
+                    var contents = GetCellValue(wbPart, worksheet, $"A{row}");
+                    if (contents.IsPresent() && contents == "INSERTHERE")
+                    {
+                        insertRow = row;
+                    }
+                }
+
+                if (insertRow == 0)
+                {
+                    error("No insert point in down timetable sheet. Exiting");
+                    return;
+                }
+
+                currentRow = insertRow;
+                // Up direction
+                for (var index = data.Locations.Length - 1; index >= 0; --index)
+                {
+                    var location = data.Locations[index];
+                    if (location.Direction == "Up")
+                        continue;
+
+                    var code = location.DownEntry ? "#" + location.Code : location.Code;
+
+                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+
+                    if (!location.ArrDep)
+                    {
+                        // Arr/dep is the only thing that splits the lines so if you don't have it, write the location name
+                        // and move on
+                        AddLocationData(shareStringPart, wsPart, location.Name, "B", currentRow);
+                        ++currentRow;
+                        continue;
+                    }
+
+                    if (location.Path)
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    if (location.Plat)
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    if (location.Line)
+                    {
+                        AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
+                        ++currentRow;
+                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    }
+
+                    // We have arr/dep if we get this far so should be easy now!
+                    AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
+                    ++currentRow;
+                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
+                    ++currentRow;
+                }
+            }
+        }
+
+        /// <summary>
         /// Check whether the cell below this timing mark has allowances
         /// </summary>
         /// <param name="trip">The current trip entry</param>
@@ -681,6 +851,91 @@ namespace SimsigImporterLib
         public static Cell GetCell(Worksheet ws,string addressName)
         {
             return ws.Descendants<Cell>().Where(c => c.CellReference == addressName).FirstOrDefault();
+        }
+
+        // Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
+        // and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
+        private static int InsertSharedStringItem(string text, SharedStringTablePart shareStringPart)
+        {
+            // If the part does not contain a SharedStringTable, create one.
+            if (shareStringPart.SharedStringTable == null)
+            {
+                shareStringPart.SharedStringTable = new SharedStringTable();
+            }
+
+            int i = 0;
+
+            // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
+            foreach (SharedStringItem item in shareStringPart.SharedStringTable.Elements<SharedStringItem>())
+            {
+                if (item.InnerText == text)
+                {
+                    return i;
+                }
+                i++;
+            }
+
+            shareStringPart.SharedStringTable.AppendChild(new SharedStringItem(new Text(text)));
+            shareStringPart.SharedStringTable.Save();
+
+            return i;
+        }
+
+        // Given a column name, a row index, and a WorksheetPart, inserts a cell into the worksheet. 
+        // If the cell already exists, returns it. 
+        private static Cell InsertCellInWorksheet(string columnName, uint rowIndex, WorksheetPart worksheetPart)
+        {
+            Worksheet worksheet = worksheetPart.Worksheet;
+            SheetData sheetData = worksheet.GetFirstChild<SheetData>();
+            string cellReference = columnName + rowIndex;
+
+            // If the worksheet does not contain a row with the specified row index, insert one.
+            Row row;
+            if (sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).Count() != 0)
+            {
+                row = sheetData.Elements<Row>().Where(r => r.RowIndex == rowIndex).First();
+            }
+            else
+            {
+                row = new Row() { RowIndex = rowIndex };
+                sheetData.Append(row);
+            }
+
+            // If there is not a cell with the specified column name, insert one.  
+            if (row.Elements<Cell>().Where(c => c.CellReference.Value == columnName + rowIndex).Count() > 0)
+            {
+                return row.Elements<Cell>().Where(c => c.CellReference.Value == cellReference).First();
+            }
+            else
+            {
+                // Cells must be in sequential order according to CellReference. Determine where to insert the new cell.
+                Cell refCell = null;
+                foreach (Cell cell in row.Elements<Cell>())
+                {
+                    if (cell.CellReference.Value.Length == cellReference.Length)
+                    {
+                        if (string.Compare(cell.CellReference.Value, cellReference, true) > 0)
+                        {
+                            refCell = cell;
+                            break;
+                        }
+                    }
+                }
+
+                Cell newCell = new Cell() { CellReference = cellReference };
+                row.InsertBefore(newCell, refCell);
+
+                worksheet.Save();
+                return newCell;
+            }
+        }
+
+        private static void AddLocationData(SharedStringTablePart shareStringPart, WorksheetPart wsPart, string contents, string column, uint row)
+        {
+            int ssIndex = InsertSharedStringItem(contents, shareStringPart);
+            Cell cell = InsertCellInWorksheet(column, row, wsPart);
+            cell.CellValue = new CellValue(ssIndex.ToString());
+            cell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
         }
     }
 }

@@ -1,9 +1,11 @@
-﻿using SimsigImporterLib;
+﻿using Newtonsoft.Json;
+using SimsigImporterLib;
 using SimsigImporterLib.Helpers;
 using SimsigImporterLib.Models;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -42,7 +44,6 @@ namespace SimsigImporter
             using (var fileChooser = new SaveFileDialog())
             {
                 fileChooser.Filter = "Simsig files (*.wtt)|*.wtt|All files (*.*)|*.*";
-                fileChooser.RestoreDirectory = true;
                 fileChooser.AddExtension = true;
                 fileChooser.DefaultExt = "wtt";
                 fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
@@ -127,11 +128,7 @@ namespace SimsigImporter
             LogInfo("...All finished...");
             LogInfo("=========================");
             progress.EnableButton();
-            if ( result == null )
-            {
-
-            }
-            else
+            if ( result != null )
             {
                 timeTable = result;
             }
@@ -269,6 +266,9 @@ namespace SimsigImporter
             }
         }
 
+        /// <summary>
+        /// Handle the form closing by saving any settings we want to reload on open
+        /// </summary>
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             var value = ((KeyValuePair<string, string>)comboSim.SelectedItem).Value;
@@ -276,11 +276,66 @@ namespace SimsigImporter
             settings.Save();
         }
 
+        /// <summary>
+        /// Handles the reset button which removes all currently loaded data
+        /// </summary>
         private void btnReset_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("This will remove any imported spreadsheets. Do you want to continue?", "Confirm", MessageBoxButtons.OKCancel) == DialogResult.OK)
             {
                 timeTable = new SimSigTimetable();
+            }
+        }
+
+        /// <summary>
+        /// Generates a template spreadsheet based on the currently selected simulation
+        /// </summary>
+        private void btnGenerate_Click(object sender, EventArgs e)
+        {
+            // Get current selected sim and look for a template in the relevant folder
+            var currentSelected = ((KeyValuePair<string, string>)comboSim.SelectedItem).Value;
+            var templatePath = Path.GetDirectoryName(Application.ExecutablePath) + $"\\Templates\\{currentSelected}.json";
+            if ( !File.Exists(templatePath))
+            {
+                MessageBox.Show("No template for the selected simulation! Please copy the spreadsheet from the program directory.");
+            }
+            else
+            {
+                var jsonString = File.ReadAllText(templatePath);
+                var data = JsonConvert.DeserializeObject<Template>(jsonString);
+
+                string path;
+                using (var fileChooser = new SaveFileDialog())
+                {
+                    fileChooser.Filter = "Excel files (*.xlsx)|*.xlsx|All files (*.*)|*.*";
+                    fileChooser.AddExtension = true;
+                    fileChooser.DefaultExt = "xlsx";
+                    fileChooser.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments);
+                    fileChooser.OverwritePrompt = true;
+
+                    if (fileChooser.ShowDialog() == DialogResult.OK)
+                    {
+                        path = fileChooser.FileName;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
+                // Copy template then update it
+                File.Copy(Path.GetDirectoryName(Application.ExecutablePath) + $"\\Template.xlsx", path);
+
+                var helper = new SpreadsheetHelper(LogInfo, LogWarning, LogError);
+                progress = new ProgressDialog();
+                progress.Show();
+
+                helper.WriteLocations(path, data);
+
+                LogInfo("=========================+");
+                LogInfo(".....Template written.....");
+                LogInfo("=========================+");
+                progress.EnableButton();
             }
         }
     }
