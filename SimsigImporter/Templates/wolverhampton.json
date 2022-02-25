@@ -1,0 +1,112 @@
+{
+  "Locations": [
+    {
+      "Code": "STAFTVJ",
+      "Name": "Stafford TV Jn",
+      "UpEntry":  true
+    },
+    {
+      "Code": "PNKRDG",
+      "Name": "Penkridge"
+    },
+    {
+      "Code": "LTLCLSF",
+      "Name": "Littleton Colliery"
+    },
+    {
+      "Code": "FRASL",
+      "Name": "Four Ashes Colliery",
+      "UpEntry": true,
+      "Direction": "Up"
+    },
+    {
+      "Code": "BSBYJDG",
+      "Name": "Bushbury DGL",
+      "Direction": "Down"
+    },
+    {
+      "Code": "BSBYJN",
+      "Name": "Bushbury Junction"
+    },
+    {
+      "Code": "WVRMSRJ",
+      "Name": "Stafford Rd Jn"
+    },
+    {
+      "Code": "COSFORD",
+      "Name": "Cosford",
+      "UpEntry": true
+    },
+    {
+      "Code": "ALBRGHT",
+      "Name": "Albrighton"
+    },
+    {
+      "Code": "CODSALL",
+      "Name": "Codsall"
+    },
+    {
+      "Code": "BILBROK",
+      "Name": "Bilbrook"
+    },
+    {
+      "Code": "OXLEY",
+      "Name": "Oxley"
+    },
+    {
+      "Code": "OXLEYCS",
+      "Name": "Oxley CS",
+      "UpEntry": true,
+      "DownEntry": true
+    },
+    {
+      "Code": "WVRNTNJ",
+      "Name": "Wolverhampton North Jn"
+    },
+    {
+      "Code": "WVRMPTN",
+      "Name": "Wolverhampton",
+      "ArrDep": true,
+      "Plat": true
+    },
+    {
+      "Code": "PBLJWM",
+      "Name": "Portobello Jn"
+    },
+    {
+      "Code": "DRLSTNJ",
+      "Name": "Darlaston Jn",
+      "DownEntry": true
+    },
+    {
+      "Code": "WVRMTST",
+      "Name": "Steel Terminal",
+      "UpEntry": true
+    },
+    {
+      "Code": "MNMRGRN",
+      "Name": "Monmore Green"
+    },
+    {
+      "Code": "COSELEY",
+      "Name": "Coseley"
+    },
+    {
+      "Code": "TIPTON",
+      "Name": "Tipton"
+    },
+    {
+      "Code": "DUDLPT",
+      "Name": "Dudley Port"
+    },
+    {
+      "Code": "SNDWDUD",
+      "Name": "Sandwell & Dudley"
+    },
+    {
+      "Code": "GALTONJ",
+      "Name": "Galton Jn",
+      "DownEntry": true
+    }
+  ]
+}
