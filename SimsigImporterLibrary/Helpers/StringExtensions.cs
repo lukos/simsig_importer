@@ -38,7 +38,7 @@ namespace SimsigImporterLib.Helpers
             return columnNumber > 26 ? Convert.ToChar(64 + (columnNumber / 26)).ToString() + Convert.ToChar(64 + (columnNumber % 26)) : Convert.ToChar(64 + columnNumber).ToString();
         }
 
-        private static Regex simsigTime = new Regex("[0-9]{2}:?[0-9]{2}", RegexOptions.Compiled);
+        private static Regex simsigTime = new Regex("^[0-9]{2}:?[0-9]{2}H?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Converts a 4 digit time into simsig time, which is seconds after midnight
@@ -51,12 +51,20 @@ namespace SimsigImporterLib.Helpers
             {
                 return 0;
             }
+            var offset = 0;
+            if (input.EndsWith("H", StringComparison.OrdinalIgnoreCase))
+            {
+                input = input.TrimEnd('H','h');
+                offset = 30;
+            }
+
             // If in user-friendly mode like 20:00 do it slightly differently than if just numbers like 2000
             if (input.Contains(":"))
             {
-                return Convert.ToInt32(input.Split(':')[0]) * 3600 + Convert.ToInt32(input.Split(':')[1]) * 60;
+                return (Convert.ToInt32(input.Split(':')[0]) * 3600 + Convert.ToInt32(input.Split(':')[1]) * 60) + offset;
             }
-            return Convert.ToInt32(input.Substring(0, 2)) * 3600 + Convert.ToInt32(input.Substring(2, 2)) * 60;
+
+            return (Convert.ToInt32(input.Substring(0, 2)) * 3600 + Convert.ToInt32(input.Substring(2, 2)) * 60) + offset;
         }
 
         /// <summary>

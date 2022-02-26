@@ -36,6 +36,7 @@ Column B can be used for a friendly name like in the sample, except for 5 specia
 
 "Arr" and "Depart" are the arrival and departure times. There are a number of ways these can be used:
 * Both can simply contain times, in which case they will be interpreted as a normal station-stop type entry
+* The time can end with h or H which adds 30 seconds to the time in the entry
 * If arr has a time, dep can contain an activity (see below for codes). It cannot contain a code and a departure time currently so this might need to be improved in the future, otherwise the train will need editing in simsig later.
 * You can include a previous code in the arr box e.g. P:5V41 and then a departure time. The previous code won't be used anywhere in the timetable but is helpful for the importer to distinguish between an originating working and a passing service
 * If arr is empty and dep has a time, then it will become a simple passing time
@@ -58,6 +59,8 @@ Codes
 
 ### Engineering/Pathing Allowances
 You can add engineering or pathing allowances for a location really easily. Add another row underneath the location you want to add allowances for and make sure there is a code in the first column so there are no gaps in the list of locations. It doesn't actually matter what is in column 1 but you might as well copy the location code from above. In the blank row, you can use bracket numbers like (2) to indicate a pathing allowance of 2 minutes and/or a square bracketed [4] to indicate an engineering allowance. There is an example in the provided spreadsheet in the Up trains under 1V44.
+
+You can also add h or H inside the brackets to add 30 seconds to the allowance e.g. (2h) is 2.5 minutes or 2m30.
 
 ### Difficult workings
 Some of the more complex features of a timetable are not easy to handle in a spreadsheet. For example, a train might logically reverse somewhere and go from Up to Down or vice-versa. Although this might be physically possible in the simulation (e.g. going round a chord onto another line), these cannot be represented easily in the working timetable and usually appear as multiple entries, one for the up part(s) and another for the down part(s).

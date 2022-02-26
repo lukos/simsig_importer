@@ -600,32 +600,45 @@ namespace SimsigImporterLib
         /// <param name="trip">The current trip entry</param>
         /// <param name="nextCell">The cell contents below the current timing mark</param>
         /// <returns>True if we manage to extract allowances, otherwise false</returns>
-        private bool HasAllowances(Trip trip, string nextCell)
+        public static bool HasAllowances(Trip trip, string nextCell)
         {
             if (nextCell == null)
                 return false;
 
-            // Get timing data
-            var content = Regex.Match(nextCell, @"(\(([0-9]{1,2})\))");
-            if (content.Groups.Count == 3)
-            {
-                trip.PathAllowance = content.Groups[2].Value.ToNullableInt();
-                if (trip.PathAllowance != null)
-                {
-                    trip.PathAllowance = trip.PathAllowance.Value * 2;
-                }
-            }
+            var content = Regex.Match(nextCell, @"(\(([0-9]{1,2}H?)\))", RegexOptions.IgnoreCase);
+            trip.PathAllowance = ExtractAllowance(content);
 
-            content = Regex.Match(nextCell, @"(\[([0-9]{1,2})\])");
+            content = Regex.Match(nextCell, @"(\[([0-9]{1,2}H?)\])", RegexOptions.IgnoreCase);
+            trip.EngAllowance = ExtractAllowance(content);
+            
+            return trip.PathAllowance.HasValue || trip.EngAllowance.HasValue;
+        }
+
+        /// <summary>
+        /// Helper method to convert a number of minutes inside a regex match to multiples of 30 seconds e.g. 2 => 4
+        /// </summary>
+        /// <param name="content">The regex match which will be 1 or 2 numerals and an optional H</param>
+        /// <returns>Null if invalid format, otherwise a number to use for allowances</returns>
+        public static int? ExtractAllowance(Match content)
+        {
+            int? result = null;
             if (content.Groups.Count == 3)
             {
-                trip.EngAllowance = content.Groups[2].Value.ToNullableInt();
-                if (trip.EngAllowance != null)
+                var entry = content.Groups[2].Value;
+                var offset = 0;
+                if ( entry.EndsWith("h", StringComparison.OrdinalIgnoreCase))
                 {
-                    trip.EngAllowance = trip.EngAllowance.Value * 2;
+                    entry = entry.TrimEnd('h', 'H');
+                    offset = 1;
+                }
+                result = entry.ToNullableInt();
+                if (result != null)
+                {
+                    result = result * 2;
+                    result += offset;
                 }
             }
-            return trip.PathAllowance.HasValue || trip.EngAllowance.HasValue;
+            return result;
         }
 
         /// <summary>
