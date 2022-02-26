@@ -57,7 +57,15 @@ namespace SimsigImporterLib.Models
         /// </summary>
         public int SeedingGap { get; set; } = 15;
 
+        /// <summary>
+        /// Gets or sets the power to weight ratio entry
+        /// </summary>
         public int AccelBrakeIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether this train runs as required or always
+        /// </summary>
+        public NumericBool AsRequired { get; set; } = false;
 
         /// <summary>
         /// Gets or sets the precentage of time that this train runs, if service options says it only runs "as required"

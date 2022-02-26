@@ -194,7 +194,7 @@ namespace SimsigImporterLib
             var rows = worksheet.Descendants<Row>().ToList();
 
             // Work out which rows are which
-            int headcodeRow = 0, powerRow = 0, seedsRow = 0, locationStartRow = 0, locationEndRow = 0, daysRow = 0, uniqueIdRow = 0;
+            int headcodeRow = 0, powerRow = 0, seedsRow = 0, locationStartRow = 0, locationEndRow = 0, daysRow = 0, uniqueIdRow = 0, asRequiredRow = 0;
 
             for(int row = 1; row <= rows.Count; ++row)
             {
@@ -223,6 +223,10 @@ namespace SimsigImporterLib
                 if (GetCellValue(wbPart, worksheet, $"A{row}") == "Days")
                 {
                     daysRow = row; continue;
+                }
+                if (GetCellValue(wbPart, worksheet, $"A{row}") == "AsRequired")
+                {
+                    asRequiredRow = row; continue;
                 }
                 if (GetCellValue(wbPart, worksheet, $"A{row}") == "Seeds")
                 {
@@ -271,7 +275,7 @@ namespace SimsigImporterLib
                 {
                     continue;
                 }
-                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, headcodeRow, powerRow, seedsRow, locationStartRow, locationEndRow, daysRow, uniqueIdRow);
+                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, headcodeRow, powerRow, seedsRow, locationStartRow, locationEndRow, daysRow, uniqueIdRow, asRequiredRow);
                 if ( timetable != null)
                 {
                     timetables.Add(timetable);
@@ -290,7 +294,7 @@ namespace SimsigImporterLib
         /// <summary>
         /// Attempts to parse an excel column to create a timetable object
         /// </summary>
-        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, int headcodeRow, int powerRow, int seedRow, int locationStartRow, int locationEndRow, int daysRow, int uniqueIdRow)
+        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, int headcodeRow, int powerRow, int seedRow, int locationStartRow, int locationEndRow, int daysRow, int uniqueIdRow, int asRequiredRow)
         {
             var tt = new Timetable();
             try
@@ -302,6 +306,15 @@ namespace SimsigImporterLib
                 if ( uniqueIdRow > 0 )
                 {
                     tt.UID = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{uniqueIdRow}");
+                }
+                if ( asRequiredRow > 0 )
+                {
+                    var value = Convert.ToInt32(GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{asRequiredRow}"));
+                    if (value > 0)
+                    {
+                        tt.AsRequired = true;
+                        tt.AsRequiredPercent = value;
+                    }
                 }
 
                 var days = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{daysRow}");
