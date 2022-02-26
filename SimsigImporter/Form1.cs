@@ -323,6 +323,11 @@ namespace SimsigImporter
                     }
                 }
 
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+
                 // Copy template then update it
                 File.Copy(Path.GetDirectoryName(Application.ExecutablePath) + $"\\Template.xlsx", path);
 
