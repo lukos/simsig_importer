@@ -1,22 +1,52 @@
 {
   "Locations": [
     {
+      "Code": "#EUST",
+      "Name": "Stafford TV Jn",
+      "Direction": "Up"
+    },
+    {
       "Code": "STAFTVJ",
       "Name": "Stafford TV Jn",
-      "UpEntry":  true
+      "Direction": "Down"
     },
     {
       "Code": "PNKRDG",
       "Name": "Penkridge"
     },
     {
-      "Code": "LTLCLSF",
-      "Name": "Littleton Colliery"
+      "Code": "LITLC4",
+      "Name": "Littleton GF",
+      "Direction": "Up"
     },
     {
-      "Code": "FRASL",
+      "Code": "LITCOLL",
+      "Name": "Littleton (arr)",
+      "Direction": "Up"
+    },
+    {
+      "Code": "#ELITCOLU",
+      "Name": "Littleton (dep)",
+      "Direction": "Up"
+    },
+    {
+      "Code": "#ELITCOLD",
+      "Name": "Littleton (dep)",
+      "Direction": "Down"
+    },
+    {
+      "Code": "LITCOLL",
+      "Name": "Littleton (arr)",
+      "Direction": "Down"
+    },
+    {
+      "Code": "LITLC3",
+      "Name": "Littleton GF",
+      "Direction": "Down"
+    },
+    {
+      "Code": "#EFRASLG",
       "Name": "Four Ashes Colliery",
-      "UpEntry": true,
       "Direction": "Up"
     },
     {
@@ -33,9 +63,14 @@
       "Name": "Stafford Rd Jn"
     },
     {
+      "Code": "#EUSH",
+      "Name": "Cosford",
+      "Direction": "Up"
+    },
+    {
       "Code": "COSFORD",
       "Name": "Cosford",
-      "UpEntry": true
+      "Direction": "Down"
     },
     {
       "Code": "ALBRGHT",
@@ -56,8 +91,12 @@
     {
       "Code": "OXLEYCS",
       "Name": "Oxley CS",
-      "UpEntry": true,
-      "DownEntry": true
+      "Direction": "Down"
+    },
+    {
+      "Code": "#EOXCS",
+      "Name": "Oxley CS",
+      "Direction": "Up"
     },
     {
       "Code": "WVRNTNJ",
@@ -74,14 +113,24 @@
       "Name": "Portobello Jn"
     },
     {
+      "Code": "#EDGJ",
+      "Name": "Darlaston Jn",
+      "Direction": "Down"
+    },
+    {
       "Code": "DRLSTNJ",
       "Name": "Darlaston Jn",
-      "DownEntry": true
+      "Direction": "Up"
+    },
+    {
+      "Code": "#E116",
+      "Name": "Steel terminal",
+      "Direction": "Up"
     },
     {
       "Code": "WVRMTST",
-      "Name": "Steel Terminal",
-      "UpEntry": true
+      "Name": "Steel terminal",
+      "Direction": "Down"
     },
     {
       "Code": "MNMRGRN",
@@ -106,7 +155,12 @@
     {
       "Code": "GALTONJ",
       "Name": "Galton Jn",
-      "DownEntry": true
+      "Direction": "Up"
+    },
+    {
+      "Code": "#EDS",
+      "Name": "Galton Jn",
+      "Direction": "Down"
     }
   ]
 }

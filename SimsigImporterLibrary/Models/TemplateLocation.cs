@@ -17,16 +17,6 @@ namespace SimsigImporterLib.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this location is for entry in the up direction
-        /// </summary>
-        public bool UpEntry { get; set; } = false;
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this location is for entry in the down direction
-        /// </summary>
-        public bool DownEntry { get; set; } = false;
-
-        /// <summary>
         /// Gets or sets whether this location only applies in one direction can be "Up" or "Down"
         /// </summary>
         public string Direction { get; set; }

@@ -386,9 +386,12 @@ namespace SimsigImporterLib
                         if (specialCode == "Arr")
                         {
                             // Previous is a way of keeping tidy records in our simplifier but is not needed for simsig
-                            if (!cellContents.StartsWith("P"))
+                            if (cellContents != null)
                             {
-                                trip.ArrTime = cellContents.ToSimsigTime();
+                                if (!cellContents.StartsWith("P"))
+                                {
+                                    trip.ArrTime = cellContents.ToSimsigTime();
+                                }
                             }
                             trip.IsPassTime = !cellContents.IsPresent();
                             ++row;
@@ -401,6 +404,10 @@ namespace SimsigImporterLib
                             if (trip.Activities == null )
                             {
                                 trip.DepPassTime = cellContents.ToSimsigTime();
+                                if (trip.IsPassTime == null) // Not set by Arr entry
+                                {
+                                    trip.IsPassTime = true;
+                                }
                             }
                             // Check for allowances
                             var nextCell = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row + 1}");
@@ -474,9 +481,7 @@ namespace SimsigImporterLib
                     if (location.Direction == "Down")
                         continue;
 
-                    var code = location.UpEntry ? "#" + location.Code : location.Code;
-
-                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
 
                     if (!location.ArrDep)
                     {
@@ -491,27 +496,27 @@ namespace SimsigImporterLib
                     {
                         AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     if (location.Plat)
                     {
                         AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     if (location.Line)
                     {
                         AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     // We have arr/dep if we get this far so should be easy now!
                     AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
                     ++currentRow;
-                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
                     ++currentRow;
                 }
@@ -547,9 +552,7 @@ namespace SimsigImporterLib
                     if (location.Direction == "Up")
                         continue;
 
-                    var code = location.DownEntry ? "#" + location.Code : location.Code;
-
-                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
 
                     if (!location.ArrDep)
                     {
@@ -564,27 +567,27 @@ namespace SimsigImporterLib
                     {
                         AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     if (location.Plat)
                     {
                         AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     if (location.Line)
                     {
                         AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
 
                     // We have arr/dep if we get this far so should be easy now!
                     AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
                     ++currentRow;
-                    AddLocationData(shareStringPart, wsPart, code, "A", currentRow);
+                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
                     ++currentRow;
                 }
@@ -632,7 +635,10 @@ namespace SimsigImporterLib
         /// <returns></returns>
         private List<Activity> TryGetActivities(string cellContents)
         {
-            
+            if ( cellContents == null )
+            {
+                return null;
+            }
             var possibleActivities = cellContents.Split(' ').ToList();
             var activites = new List<Activity>(possibleActivities.Count);
             foreach (var act in possibleActivities)
