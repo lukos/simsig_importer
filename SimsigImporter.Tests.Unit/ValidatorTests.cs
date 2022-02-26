@@ -20,21 +20,5 @@ namespace SimsigImporter.Tests.Unit
         {
             Validators.VerifyDayCode(input).ShouldBe(expectedOutput);
         }
-
-
-        [TestCase("(1)", 1, null)]
-        [TestCase("[2]", null, 2)]
-        [TestCase("[12]", null, 12)]
-        [TestCase("[12] (9)", 9, 12)]
-        [TestCase("[12](9)", 9, 12)]
-        [TestCase("(7)[12]", 7, 12)]
-        public void TestTimingExtract(string input, int? allowance, int? eng)
-        {
-            var content = Regex.Match(input, @"(\(([0-9]{1,2})\))");
-            content.Groups[2].Value.ToNullableInt().ShouldBe(allowance);
-
-            content = Regex.Match(input, @"(\[([0-9]{1,2})\])");
-            content.Groups[2].Value.ToNullableInt().ShouldBe(eng);
-        }
     }
 }

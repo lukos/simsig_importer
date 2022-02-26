@@ -29,5 +29,18 @@ namespace SimsigImporter.Tests.Unit
         {
             input.ContainsDay(day).ShouldBe(expectedOutput);
         }
+
+        // Note that failed conversion return 0
+        [TestCase("0010", 600)]
+        [TestCase("00101", 0)]
+        [TestCase("random", 0)]
+        [TestCase("1610", 58200)]
+        [TestCase("16:10", 58200)]
+        [TestCase("1610H", 58230)]
+        [TestCase("16:10H", 58230)]
+        public void TestToSimsigTime(string input, int result)
+        {
+            input.ToSimsigTime().ShouldBe(result);
+        }
     }
 }
