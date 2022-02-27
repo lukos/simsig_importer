@@ -85,88 +85,46 @@ namespace SimsigImporterLib
                 // Up timetable
                 //
                 /////////////////////////////////
-                Sheet ttSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Up");
-                if (ttSheet == null)
+                List<Sheet> ttSheets = doc.WorkbookPart.Workbook.Sheets.ChildElements.Where(sheet => ((Sheet)sheet).Name.HasValue && ((Sheet)sheet).Name.Value.StartsWith("Timetable")).Cast<Sheet>().ToList();
+                if (ttSheets.Count == 0)
                 {
-                    warning("No Up timetable found in spreadsheet. The sheet needs to be called Timetable Up");
+                    warning("No timetables found in spreadsheet. The sheet name(s) need to start with \"Timetable\"");
                 }
                 else
                 {
-                    var upTTs = ProcessTimetable(doc, ttSheet, tt);
+                    foreach (var sheet in ttSheets)
+                    {
+                        info($"Processing sheet {sheet.Name}");
+                        var tts = ProcessTimetable(doc, sheet, tt);
 
-                    if (upTTs == null)
-                    {
-                        warning("No timetables found in Up timetable sheet. Possible formatting error. Ignoring");
-                    }
-                    else
-                    {
-                        tt.Timetables.AddRange(upTTs);
-                        info("Mapping timetables to their train type");
-                        foreach (var working in upTTs)
+                        if (tts == null)
                         {
-                            if (tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
-                            {
-                                var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
-                                working.Category = trainData.ID;
-                                // Train data is copied across (denormalised) to the working even though it has the reference above
-                                working.TrainLength = trainData.TrainLength;
-                                working.AccelBrakeIndex = trainData.AccelBrakeIndex;
-                                working.MaxSpeed = trainData.MaxSpeed;
-                                working.SpeedClass = trainData.SpeedClass;
-                                working.IsFreight = trainData.IsFreight;
-                                working.CanUseGoodsLines = trainData.CanUseGoodsLines;
-                                working.Electrification = trainData.Electrification;
-                                working.StartTraction = trainData.Electrification;
-                            }
-                            else
-                            {
-                                warning($"Could not find train type for ID {working.Category}");
-                            }
+                            warning($"No timetables found in sheet {sheet.Name}. Possible formatting error. Ignoring");
                         }
-                    }
-                }
-
-                /////////////////////////////////
-                //
-                // Down timetable
-                //
-                /////////////////////////////////
-                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
-                if (ttSheet2 == null)
-                {
-                    warning("No Down timetable found in spreadsheet. The sheet needs to be called Timetable Down");
-                }
-                else
-                {
-                    var downTt = ProcessTimetable(doc, ttSheet2, tt);
-
-                    if (downTt == null)
-                    {
-                        warning("No timetables found in Down timetable sheet. Possible formatting error. Ignoring");
-                    }
-                    else
-                    {
-                        tt.Timetables.AddRange(downTt);
-                        info("Mapping timetables to their train type");
-                        foreach (var working in downTt)
+                        else
                         {
-                            if (tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
+                            tt.Timetables.AddRange(tts);
+                            info("Mapping timetables to their train type");
+                            foreach (var working in tts)
                             {
-                                var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
-                                working.Category = trainData.ID;
-                                // Train data is copied across (denormalised) to the working even though it has the reference above
-                                working.TrainLength = trainData.TrainLength;
-                                working.AccelBrakeIndex = trainData.AccelBrakeIndex;
-                                working.MaxSpeed = trainData.MaxSpeed;
-                                working.SpeedClass = trainData.SpeedClass;
-                                working.IsFreight = trainData.IsFreight;
-                                working.CanUseGoodsLines = trainData.CanUseGoodsLines;
-                                working.Electrification = trainData.Electrification;
-                                working.StartTraction = trainData.Electrification;
-                            }
-                            else
-                            {
-                                warning($"Could not find train type for ID {working.Category}");
+                                if (tt.TrainCategories.Any(tc => tc.SheetId == working.Category))
+                                {
+                                    var trainData = tt.TrainCategories.First(tc => tc.SheetId == working.Category);
+                                    working.Category = trainData.ID;
+                                    // Train data is copied across (denormalised) to the working even though it has the reference above
+                                    working.TrainLength = trainData.TrainLength;
+                                    working.AccelBrakeIndex = trainData.AccelBrakeIndex;
+                                    working.MaxSpeed = trainData.MaxSpeed;
+                                    working.SpeedClass = trainData.SpeedClass;
+                                    working.IsFreight = trainData.IsFreight;
+                                    working.CanUseGoodsLines = trainData.CanUseGoodsLines;
+                                    working.Electrification = trainData.Electrification;
+                                    working.StartTraction = trainData.Electrification;
+                                }
+                                else
+                                {
+                                    warning($"Could not find train type for ID {working.Category}");
+                                }
                             }
                         }
                     }
@@ -452,159 +410,120 @@ namespace SimsigImporterLib
             using (SpreadsheetDocument doc = SpreadsheetDocument.Open(path, true))
             {
                 // Find the two timetable tables and the "INSERTHERE" text and write the locations in opposite order
-                Sheet ttSheet1 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Up");
-                Sheet ttSheet2 = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Timetable Down");
-                if (ttSheet1 == null || ttSheet2 == null)
+                Sheet templateSheet = (Sheet)doc.WorkbookPart.Workbook.Sheets.ChildElements.FirstOrDefault(sheet => ((Sheet)sheet).Name == "Template");
+                if (templateSheet == null)
                 {
-                    error("Could not find one or both timetable sheets in template, exiting");
+                    error("Could not find the template sheet, exiting");
                     return;
                 }
 
-                WorkbookPart wbPart = doc.WorkbookPart;
+                var wbPart = doc.WorkbookPart;
                 var shareStringPart = wbPart.GetPartsOfType<SharedStringTablePart>().First();
+                // Get workbook for source sheet
+                var sourcePart = (WorksheetPart)wbPart.GetPartById(templateSheet.Id);
+                var sourceWorksheet = sourcePart.Worksheet;
 
-
-                WorksheetPart wsPart = (WorksheetPart)wbPart.GetPartById(ttSheet1.Id);
-                Worksheet worksheet = wsPart.Worksheet;
-                var rows = worksheet.Descendants<Row>().ToList();
-
-                // Work out which row to insert
-                uint insertRow = 0;
-
-                for (uint row = 1; row <= rows.Count; ++row)
+                // Go through each name => locations entry
+                foreach (var entry in data.Locations)
                 {
-                    var contents = GetCellValue(wbPart, worksheet, $"A{row}");
-                    if (contents.IsPresent() && contents == "INSERTHERE")
+                    var newId = InsertWorksheet(wbPart, (Worksheet)sourceWorksheet.CloneNode(true), "Timetable " + entry.Key);
+                   
+                    WorksheetPart wsPart = (WorksheetPart)wbPart.GetPartById(newId);
+                    Worksheet worksheet = wsPart.Worksheet;
+                    var rows = worksheet.Descendants<Row>().ToList();
+
+                    // Work out which row to insert
+                    uint insertRow = 0;
+
+                    for (uint row = 1; row <= rows.Count; ++row)
                     {
-                        insertRow = row;
-                    }
-                }
-
-                if ( insertRow == 0 )
-                {
-                    error("No insert point in up timetable sheet. Exiting");
-                    return;
-                }
-
-                var currentRow = insertRow;
-                // Up direction
-                for (uint index = 0; index < data.Locations.Length; ++index)
-                {
-                    var location = data.Locations[index];
-                    if (location.Direction == "Down")
-                        continue;
-
-                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-
-                    if (!location.ArrDep)
-                    {
-                        // Arr/dep is the only thing that splits the lines so if you don't have it, write the location name
-                        // and move on
-                        AddLocationData(shareStringPart, wsPart, location.Name, "B", currentRow);
-                        ++currentRow;
-                        continue;
+                        var contents = GetCellValue(wbPart, worksheet, $"A{row}");
+                        if (contents.IsPresent() && contents == "INSERTHERE")
+                        {
+                            insertRow = row;
+                        }
                     }
 
-                    if ( location.Path )
+                    if (insertRow == 0)
                     {
-                        AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
+                        error("No insert point in template timetable sheet. Exiting");
+                        return;
+                    }
+
+                    var currentRow = insertRow;
+                    // Up direction
+                    for (uint index = 0; index < entry.Value.Length; ++index)
+                    {
+                        var location = entry.Value[index];
+                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
+
+                        if (!location.ArrDep)
+                        {
+                            // Arr/dep is the only thing that splits the lines so if you don't have it, write the location name
+                            // and move on
+                            AddLocationData(shareStringPart, wsPart, location.Name, "B", currentRow);
+                            ++currentRow;
+                            continue;
+                        }
+
+                        if (location.Path)
+                        {
+                            AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
+                            ++currentRow;
+                            AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
+                        }
+
+                        if (location.Plat)
+                        {
+                            AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
+                            ++currentRow;
+                            AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
+                        }
+
+                        if (location.Line)
+                        {
+                            AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
+                            ++currentRow;
+                            AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
+                        }
+
+                        // We have arr/dep if we get this far so should be easy now!
+                        AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
                         ++currentRow;
                         AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    }
-
-                    if (location.Plat)
-                    {
-                        AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
+                        AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
                         ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
                     }
-
-                    if (location.Line)
-                    {
-                        AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
-                        ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    }
-
-                    // We have arr/dep if we get this far so should be easy now!
-                    AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
-                    ++currentRow;
-                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
-                    ++currentRow;
-                }
-
-                // Now for the down timetable sheet. Same thing but in the reverse order and logic *very* slightly different
-                wsPart = (WorksheetPart)wbPart.GetPartById(ttSheet2.Id);
-                worksheet = wsPart.Worksheet;
-                rows = worksheet.Descendants<Row>().ToList();
-
-                // Work out which row to insert
-                insertRow = 0;
-
-                for (uint row = 1; row <= rows.Count; ++row)
-                {
-                    var contents = GetCellValue(wbPart, worksheet, $"A{row}");
-                    if (contents.IsPresent() && contents == "INSERTHERE")
-                    {
-                        insertRow = row;
-                    }
-                }
-
-                if (insertRow == 0)
-                {
-                    error("No insert point in down timetable sheet. Exiting");
-                    return;
-                }
-
-                currentRow = insertRow;
-                // Up direction
-                for (var index = data.Locations.Length - 1; index >= 0; --index)
-                {
-                    var location = data.Locations[index];
-                    if (location.Direction == "Up")
-                        continue;
-
-                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-
-                    if (!location.ArrDep)
-                    {
-                        // Arr/dep is the only thing that splits the lines so if you don't have it, write the location name
-                        // and move on
-                        AddLocationData(shareStringPart, wsPart, location.Name, "B", currentRow);
-                        ++currentRow;
-                        continue;
-                    }
-
-                    if (location.Path)
-                    {
-                        AddLocationData(shareStringPart, wsPart, "Path", "B", currentRow);
-                        ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    }
-
-                    if (location.Plat)
-                    {
-                        AddLocationData(shareStringPart, wsPart, "Plat", "B", currentRow);
-                        ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    }
-
-                    if (location.Line)
-                    {
-                        AddLocationData(shareStringPart, wsPart, "Line", "B", currentRow);
-                        ++currentRow;
-                        AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    }
-
-                    // We have arr/dep if we get this far so should be easy now!
-                    AddLocationData(shareStringPart, wsPart, "Arr", "B", currentRow);
-                    ++currentRow;
-                    AddLocationData(shareStringPart, wsPart, location.Code, "A", currentRow);
-                    AddLocationData(shareStringPart, wsPart, "Dep", "B", currentRow);
-                    ++currentRow;
                 }
             }
+        }
+
+        // Given a document name, inserts a new worksheet.
+        public static string InsertWorksheet(WorkbookPart workbookPart, Worksheet workSheet, string name)
+        {
+            // Add a blank WorksheetPart.
+            WorksheetPart newWorksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+            newWorksheetPart.Worksheet = workSheet;
+
+            Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
+            string relationshipId = workbookPart.GetIdOfPart(newWorksheetPart);
+
+            // Get a unique ID for the new worksheet.
+            uint sheetId = 1;
+            if (sheets.Elements<Sheet>().Count() > 0)
+            {
+                sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
+            }
+
+            // Append the new worksheet and associate it with the workbook.
+            var sheet = new Sheet
+            {
+                Id = relationshipId,
+                SheetId = sheetId,
+                Name = name
+            };
+            sheets.Append(sheet);
+            return relationshipId;
         }
 
         /// <summary>
