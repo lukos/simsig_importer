@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace SimsigImporterLib.Helpers
@@ -92,6 +94,55 @@ namespace SimsigImporterLib.Helpers
                     return "SUN";
                 default:
                     throw new NotImplementedException($"Unexpected day [{input}] in ToDayCode");
+            }
+        }
+
+        /// <summary>
+        /// Converts timetable days e.g. MSO into a formatted rule for the dotw decision e.g [any] MON | SAT
+        /// </summary>
+        /// <param name="ttDays"></param>
+        /// <returns></returns>
+        public static string ToDotwChoice(this string ttDays)
+        {
+            // Blank implies Monday to Saturday so return "not sunday"
+            if (ttDays.IsMissing())
+                return "[not] SUN";
+
+            // Sunday is easy!
+            if (ttDays.ToUpper() == "SUN")
+                return "SUN";
+
+            var sb = new StringBuilder("[any] ");
+
+            new List<string> { "M", "T", "W", "Th", "F", "S" }.ForEach(day => { if (ttDays.ContainsDay(day)) { sb.Append(day.ToThreeLetters() + " | "); } });
+
+            // Cut off last pipe bit
+            return sb.ToString().Substring(0, sb.ToString().Length - 3);
+        }
+
+        /// <summary>
+        /// Convert the single letter used on a timetable to a three letter one used in the decision choices
+        /// </summary>
+        /// <param name="input">The single letter to convert</param>
+        /// <returns>A 3-letter form of the input</returns>
+        public static string ToThreeLetters(this string input)
+        {
+            switch (input)
+            {
+                case "M":
+                    return "MON";
+                case "T":
+                    return "TUE";
+                case "W":
+                    return "WED";
+                case "Th":
+                    return "THU";
+                case "F":
+                    return "FRI";
+                case "S":
+                    return "SAT";
+                default:
+                    throw new NotImplementedException("Unexpected day code for conversion");
             }
         }
 
