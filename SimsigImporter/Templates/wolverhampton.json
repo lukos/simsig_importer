@@ -1,166 +1,324 @@
 {
-  "Locations": [
-    {
-      "Code": "#EUST",
-      "Name": "Stafford TV Jn",
-      "Direction": "Up"
-    },
-    {
-      "Code": "STAFTVJ",
-      "Name": "Stafford TV Jn",
-      "Direction": "Down"
-    },
-    {
-      "Code": "PNKRDG",
-      "Name": "Penkridge"
-    },
-    {
-      "Code": "LITLC4",
-      "Name": "Littleton GF",
-      "Direction": "Up"
-    },
-    {
-      "Code": "LITCOLL",
-      "Name": "Littleton (arr)",
-      "Direction": "Up"
-    },
-    {
-      "Code": "#ELITCOLU",
-      "Name": "Littleton (dep)",
-      "Direction": "Up"
-    },
-    {
-      "Code": "#ELITCOLD",
-      "Name": "Littleton (dep)",
-      "Direction": "Down"
-    },
-    {
-      "Code": "LITCOLL",
-      "Name": "Littleton (arr)",
-      "Direction": "Down"
-    },
-    {
-      "Code": "LITLC3",
-      "Name": "Littleton GF",
-      "Direction": "Down"
-    },
-    {
-      "Code": "#EFRASLG",
-      "Name": "Four Ashes Colliery",
-      "Direction": "Up"
-    },
-    {
-      "Code": "BSBYJDG",
-      "Name": "Bushbury DGL",
-      "Direction": "Down"
-    },
-    {
-      "Code": "BSBYJN",
-      "Name": "Bushbury Junction"
-    },
-    {
-      "Code": "WVRMSRJ",
-      "Name": "Stafford Rd Jn"
-    },
-    {
-      "Code": "#EUSH",
-      "Name": "Cosford",
-      "Direction": "Up"
-    },
-    {
-      "Code": "COSFORD",
-      "Name": "Cosford",
-      "Direction": "Down"
-    },
-    {
-      "Code": "ALBRGHT",
-      "Name": "Albrighton"
-    },
-    {
-      "Code": "CODSALL",
-      "Name": "Codsall"
-    },
-    {
-      "Code": "BILBROK",
-      "Name": "Bilbrook"
-    },
-    {
-      "Code": "OXLEY",
-      "Name": "Oxley"
-    },
-    {
-      "Code": "OXLEYCS",
-      "Name": "Oxley CS",
-      "Direction": "Down"
-    },
-    {
-      "Code": "#EOXCS",
-      "Name": "Oxley CS",
-      "Direction": "Up"
-    },
-    {
-      "Code": "WVRNTNJ",
-      "Name": "Wolverhampton North Jn"
-    },
-    {
-      "Code": "WVRMPTN",
-      "Name": "Wolverhampton",
-      "ArrDep": true,
-      "Plat": true
-    },
-    {
-      "Code": "PBLJWM",
-      "Name": "Portobello Jn"
-    },
-    {
-      "Code": "#EDGJ",
-      "Name": "Darlaston Jn",
-      "Direction": "Down"
-    },
-    {
-      "Code": "DRLSTNJ",
-      "Name": "Darlaston Jn",
-      "Direction": "Up"
-    },
-    {
-      "Code": "#E116",
-      "Name": "Steel terminal",
-      "Direction": "Up"
-    },
-    {
-      "Code": "WVRMTST",
-      "Name": "Steel terminal",
-      "Direction": "Down"
-    },
-    {
-      "Code": "MNMRGRN",
-      "Name": "Monmore Green"
-    },
-    {
-      "Code": "COSELEY",
-      "Name": "Coseley"
-    },
-    {
-      "Code": "TIPTON",
-      "Name": "Tipton"
-    },
-    {
-      "Code": "DUDLPT",
-      "Name": "Dudley Port"
-    },
-    {
-      "Code": "SNDWDUD",
-      "Name": "Sandwell & Dudley"
-    },
-    {
-      "Code": "GALTONJ",
-      "Name": "Galton Jn",
-      "Direction": "Up"
-    },
-    {
-      "Code": "#EDS",
-      "Name": "Galton Jn",
-      "Direction": "Down"
-    }
-  ]
+  "Locations": {
+    "Up": [
+      {
+        "Code": "#EUST",
+        "Name": "Stafford TV Jn"
+      },
+      {
+        "Code": "PNKRDG",
+        "Name": "Penkridge"
+      },
+      {
+        "Code": "LITLC4",
+        "Name": "Littleton GF"
+      },
+      {
+        "Code": "LITCOLL",
+        "Name": "Littleton (arr)"
+      },
+      {
+        "Code": "#ELITCOLU",
+        "Name": "Littleton (dep)"
+      },
+      {
+        "Code": "#EFRASLG",
+        "Name": "Four Ashes Colliery"
+      },
+      {
+        "Code": "BSBYJN",
+        "Name": "Bushbury Junction"
+      },
+      {
+        "Code": "WVRMSRJ",
+        "Name": "Stafford Rd Jn"
+      },
+      {
+        "Code": "#EUSH",
+        "Name": "Cosford"
+      },
+      {
+        "Code": "ALBRGHT",
+        "Name": "Albrighton"
+      },
+      {
+        "Code": "CODSALL",
+        "Name": "Codsall"
+      },
+      {
+        "Code": "BILBROK",
+        "Name": "Bilbrook"
+      },
+      {
+        "Code": "OXLEY",
+        "Name": "Oxley"
+      },
+      {
+        "Code": "#EOXCS",
+        "Name": "Oxley CS"
+      },
+      {
+        "Code": "WVRNTNJ",
+        "Name": "Wolverhampton North Jn"
+      },
+      {
+        "Code": "WVRMPTN",
+        "Name": "Wolverhampton",
+        "ArrDep": true,
+        "Plat": true
+      },
+      {
+        "Code": "PBLJWM",
+        "Name": "Portobello Jn"
+      },
+      {
+        "Code": "DRLSTNJ",
+        "Name": "Darlaston Jn"
+      },
+      {
+        "Code": "#E116",
+        "Name": "Steel terminal"
+      },
+      {
+        "Code": "MNMRGRN",
+        "Name": "Monmore Green"
+      },
+      {
+        "Code": "COSELEY",
+        "Name": "Coseley"
+      },
+      {
+        "Code": "TIPTON",
+        "Name": "Tipton"
+      },
+      {
+        "Code": "DUDLPT",
+        "Name": "Dudley Port"
+      },
+      {
+        "Code": "SNDWDUD",
+        "Name": "Sandwell & Dudley"
+      },
+      {
+        "Code": "GALTONJ",
+        "Name": "Galton Jn"
+      }
+    ],
+    "Down": [
+      {
+        "Code": "#EDS",
+        "Name": "Galton Jn"
+      },
+      {
+        "Code": "SNDWDUD",
+        "Name": "Sandwell & Dudley"
+      },
+      {
+        "Code": "DUDLPT",
+        "Name": "Dudley Port"
+      },
+      {
+        "Code": "TIPTON",
+        "Name": "Tipton"
+      },
+      {
+        "Code": "COSELEY",
+        "Name": "Coseley"
+      },
+      {
+        "Code": "MNMRGRN",
+        "Name": "Monmore Green"
+      },
+      {
+        "Code": "WVRMTST",
+        "Name": "Steel terminal"
+      },
+      {
+        "Code": "#EDGJ",
+        "Name": "Darlaston Jn"
+      },
+      {
+        "Code": "PBLJWM",
+        "Name": "Portobello Jn"
+      },
+      {
+        "Code": "WVRMPTN",
+        "Name": "Wolverhampton",
+        "ArrDep": true,
+        "Plat": true
+      },
+      {
+        "Code": "WVRNTNJ",
+        "Name": "Wolverhampton North Jn"
+      },
+      {
+        "Code": "OXLEYCS",
+        "Name": "Oxley CS"
+      },
+      {
+        "Code": "OXLEY",
+        "Name": "Oxley"
+      },
+      {
+        "Code": "BILBROK",
+        "Name": "Bilbrook"
+      },
+      {
+        "Code": "CODSALL",
+        "Name": "Codsall"
+      },
+      {
+        "Code": "ALBRGHT",
+        "Name": "Albrighton"
+      },
+      {
+        "Code": "COSFORD",
+        "Name": "Cosford"
+      },
+      {
+        "Code": "WVRMSRJ",
+        "Name": "Stafford Rd Jn"
+      },
+      {
+        "Code": "BSBYJN",
+        "Name": "Bushbury Junction"
+      },
+      {
+        "Code": "BSBYJDG",
+        "Name": "Bushbury DGL"
+      },
+      {
+        "Code": "LITLC3",
+        "Name": "Littleton GF"
+      },
+      {
+        "Code": "LITCOLL",
+        "Name": "Littleton (arr)"
+      },
+      {
+        "Code": "#ELITCOLD",
+        "Name": "Littleton (dep)"
+      },
+      {
+        "Code": "PNKRDG",
+        "Name": "Penkridge"
+      },
+      {
+        "Code": "STAFTVJ",
+        "Name": "Stafford TV Jn"
+      }
+    ],
+    "Staff to Cosford": [
+      {
+        "Code": "#EUST",
+        "Name": "Stafford TV Jn"
+      },
+      {
+        "Code": "PNKRDG",
+        "Name": "Penkridge"
+      },
+      {
+        "Code": "LITLC4",
+        "Name": "Littleton GF"
+      },
+      {
+        "Code": "LITCOLL",
+        "Name": "Littleton (arr)"
+      },
+      {
+        "Code": "#ELITCOLU",
+        "Name": "Littleton (dep)"
+      },
+      {
+        "Code": "#EFRASLG",
+        "Name": "Four Ashes Colliery"
+      },
+      {
+        "Code": "BSBYJN",
+        "Name": "Bushbury Junction"
+      },
+      {
+        "Code": "WVRMSRJ",
+        "Name": "Stafford Rd Jn"
+      },
+      {
+        "Code": "OXLEYCS",
+        "Name": "Oxley CS"
+      },
+      {
+        "Code": "OXLEY",
+        "Name": "Oxley"
+      },
+      {
+        "Code": "BILBROK",
+        "Name": "Bilbrook"
+      },
+      {
+        "Code": "CODSALL",
+        "Name": "Codsall"
+      },
+      {
+        "Code": "ALBRGHT",
+        "Name": "Albrighton"
+      },
+      {
+        "Code": "COSFORD",
+        "Name": "Cosford"
+      }
+    ],
+    "Cosford to Staff": [
+      {
+        "Code": "#EUSH",
+        "Name": "Cosford"
+      },
+      {
+        "Code": "ALBRGHT",
+        "Name": "Albrighton"
+      },
+      {
+        "Code": "CODSALL",
+        "Name": "Codsall"
+      },
+      {
+        "Code": "BILBROK",
+        "Name": "Bilbrook"
+      },
+      {
+        "Code": "OXLEY",
+        "Name": "Oxley"
+      },
+      {
+        "Code": "WVRMSRJ",
+        "Name": "Stafford Rd Jn"
+      },
+      {
+        "Code": "BSBYJN",
+        "Name": "Bushbury Junction"
+      },
+      {
+        "Code": "BSBYJDG",
+        "Name": "Bushbury DGL"
+      },
+      {
+        "Code": "LITLC3",
+        "Name": "Littleton GF"
+      },
+      {
+        "Code": "LITCOLL",
+        "Name": "Littleton (arr)"
+      },
+      {
+        "Code": "#ELITCOLD",
+        "Name": "Littleton (dep)"
+      },
+      {
+        "Code": "PNKRDG",
+        "Name": "Penkridge"
+      },
+      {
+        "Code": "STAFTVJ",
+        "Name": "Stafford TV Jn"
+      }
+    ]
+  }
 }
