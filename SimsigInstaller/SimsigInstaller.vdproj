@@ -21,6 +21,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_14804FC7AAF13657DB0090E4378CFCFA"
+        "OwnerKey" = "8:_C11473654F834C4CA96B5C2676675E27"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1DCB302F57F8FD57EFA28DDD661DC2EB"
         "OwnerKey" = "8:_C11473654F834C4CA96B5C2676675E27"
         "MsmSig" = "8:_UNDEFINED"
@@ -40,12 +46,6 @@
         "Entry"
         {
         "MsmKey" = "8:_67A5DED804E153D7B7D6E74BBC18F1B1"
-        "OwnerKey" = "8:_C11473654F834C4CA96B5C2676675E27"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6F4BD624ADDA47F9617E9261EC1E861F"
         "OwnerKey" = "8:_C11473654F834C4CA96B5C2676675E27"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -94,7 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_CF56E186F7161C6AB4F6C6F4A9D94C14"
-        "OwnerKey" = "8:_6F4BD624ADDA47F9617E9261EC1E861F"
+        "OwnerKey" = "8:_14804FC7AAF13657DB0090E4378CFCFA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -112,7 +112,7 @@
         "Entry"
         {
         "MsmKey" = "8:_E8D7F2DDB8AFD53B3D184DAE9099018C"
-        "OwnerKey" = "8:_6F4BD624ADDA47F9617E9261EC1E861F"
+        "OwnerKey" = "8:_14804FC7AAF13657DB0090E4378CFCFA"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -301,6 +301,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_14804FC7AAF13657DB0090E4378CFCFA"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SimsigImporterLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_14804FC7AAF13657DB0090E4378CFCFA"
+                    {
+                    "Name" = "8:SimsigImporterLibrary.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:SimsigImporterLibrary.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_14FAEF53DA174AD198086E06B2A547F2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1DCB302F57F8FD57EFA28DDD661DC2EB"
             {
             "AssemblyRegister" = "3:1"
@@ -391,37 +422,6 @@
             "PackageAs" = "3:1"
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6F4BD624ADDA47F9617E9261EC1E861F"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SimsigImporterLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6F4BD624ADDA47F9617E9261EC1E861F"
-                    {
-                    "Name" = "8:SimsigImporterLibrary.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SimsigImporterLibrary.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_14FAEF53DA174AD198086E06B2A547F2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }

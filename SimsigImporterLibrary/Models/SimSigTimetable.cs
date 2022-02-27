@@ -37,6 +37,8 @@ namespace SimsigImporterLib.Models
 
         public List<Timetable> Timetables { get; set; } = new List<Timetable>();
 
+        public List<Decision> Decisions { get; set; } = new List<Decision>();
+
         public SimSigTimetable Clone()
         {
             return (SimSigTimetable)this.MemberwiseClone();

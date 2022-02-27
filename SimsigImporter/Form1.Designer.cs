@@ -200,6 +200,7 @@
             this.comboDays.FormattingEnabled = true;
             this.comboDays.Items.AddRange(new object[] {
             "All - single TT",
+            "All - single TT + DOTW",
             "All - separate TTs",
             "Monday",
             "Tuesday",

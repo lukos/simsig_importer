@@ -1,8 +1,6 @@
 using NUnit.Framework;
 using Shouldly;
 using SimsigImporterLib.Helpers;
-using System;
-using System.Text.RegularExpressions;
 
 namespace SimsigImporter.Tests.Unit
 {

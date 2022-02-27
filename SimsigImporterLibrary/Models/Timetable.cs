@@ -37,6 +37,17 @@ namespace SimsigImporterLib.Models
         public string EntryPoint { get; set; }
 
         /// <summary>
+        /// Gets or sets the optional entry decision, which is the name of the decision you want to look at
+        /// </summary>
+        public string EntryDecision { get; set; }
+
+        /// <summary>
+        /// Gets or sets the optional entry choice which can be one or more of the choices in the decision
+        /// e.g. MON, [not] SAT | SUN, [any] FRI | SAT
+        /// </summary>
+        public string EntryChoice { get; set; }
+
+        /// <summary>
         /// The locations data. Note the locations does not include the entry point
         /// </summary>
         public List<Trip> Trips { get; set; } = new List<Trip>();

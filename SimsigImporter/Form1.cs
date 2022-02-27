@@ -61,9 +61,20 @@ namespace SimsigImporter
 
             var exporter = new SimsigExporter();
 
-            if ( comboDays.SelectedItem.ToString() == "All - single TT" )
+            if (comboDays.SelectedItem.ToString() == "All - single TT + DOTW")
             {
-                exporter.Export(timeTable, path);
+                var dotw = timeTable.Clone();
+                dotw.Decisions.Add(SimsigExporter.CreateDotwDecision());
+                dotw.Timetables.ForEach(tt => { 
+                    tt.EntryDecision = "DOTW";
+                    tt.EntryChoice = tt.Days.ToDotwChoice(); 
+                });
+                exporter.Export(dotw, path);
+                MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else if ( comboDays.SelectedItem.ToString() == "All - single TT" )
+            {
+                exporter.Export(timeTable.Clone(), path);
                 MessageBox.Show("Timetable exported", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else if (comboDays.SelectedItem.ToString() == "All - separate TTs")
