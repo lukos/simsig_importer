@@ -1,0 +1,432 @@
+{
+  "Locations": {
+    "Down Stour": [
+      {
+        "Code": "#EDST",
+        "Name": "Coventry"
+      },
+      {
+        "Code": "CANLEY",
+        "Name": "Canley"
+      },
+      {
+        "Code": "TILEH",
+        "Name": "Tile Hill"
+      },
+      {
+        "Code": "BKSWELL",
+        "Name": "Berkswell"
+      },
+      {
+        "Code": "HMPTNIA",
+        "Name": "Hampden in Arden"
+      },
+      {
+        "Code": "BHAMINT",
+        "Name": "Birmingham International",
+        "Plat": true,
+        "ArrDep": true
+      },
+      {
+        "Code": "MRSTNGR",
+        "Name": "Marston Green"
+      },
+      {
+        "Code": "LEAHALL",
+        "Name": "Lea Hall"
+      },
+      {
+        "Code": "STECHFD",
+        "Name": "Stechford"
+      },
+      {
+        "Code": "ADERLYP",
+        "Name": "Adderley Park"
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction"
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Plat": true
+      },
+      {
+        "Code": "SOHOSJ",
+        "Name": "Soho South Jn"
+      },
+      {
+        "Code": "SOHODED",
+        "Name": "Soho Depot arr"
+      },
+      {
+        "Code": "#ESOHO",
+        "Name":  "Soho Deport dep"
+      },
+      {
+        "Code": "SOHONJ",
+        "Name": "Soho North Jn"
+      },
+      {
+        "Code": "SMTHKRS",
+        "Name": "Smethwick Rolfe St"
+      },
+      {
+        "Code": "GALTONJ",
+        "Name": "Galton Jn"
+      },
+      {
+        "Code": "SMTHWKW",
+        "Name": "Smethwick West"
+      },
+      {
+        "Code": "LGRN",
+        "Name": "Langley Green"
+      },
+      {
+        "Code": "ROWLEYR",
+        "Name": "Rowley Regis"
+      }
+    ],
+    "Up Stour": [
+      {
+        "Code": "ROWLEYR",
+        "Name": "Rowley Regis"
+      },
+      {
+        "Code": "LGRN",
+        "Name": "Langley Green"
+      },
+      {
+        "Code": "SMTHWKW",
+        "Name": "Smethwick West"
+      },
+      {
+        "Code": "#EWOLV",
+        "Name": "Wolverhampton"
+      },
+      {
+        "Code": "#EGULF",
+        "Name": "Gulf Oil Terminal"
+      },
+      {
+        "Code": "GALTONJ",
+        "Name": "Galton Jn"
+      },
+      {
+        "Code": "SMTHKRS",
+        "Name": "Smethwick Rolfe St"
+      },
+      {
+        "Code": "SOHONJ",
+        "Name": "Soho North Jn"
+      },
+      {
+        "Code": "#ESOHO",
+        "Name": "Soho Deport dep"
+      },
+      {
+        "Code": "SOHODED",
+        "Name": "Soho Depot arr"
+      },
+      {
+        "Code": "SOHOSJ",
+        "Name": "Soho South Jn"
+      },
+      {
+        "Code": "MNMNTLA",
+        "Name": "Monument Lane"
+      },
+      {
+        "Code": "BNSENG",
+        "Name": "Birmingham New Street Engine Sdgs",
+        "Plat": true
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Plat": true,
+        "Line": true
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction"
+      },
+      {
+        "Code": "GRJT",
+        "Name": "Grand Junction"
+      },
+      {
+        "Code": "BRDSLYJ",
+        "Name": "Boardsley Junction"
+      },
+      {
+        "Code": "LNDRSTJ",
+        "Name": "Landor St Junction"
+      },
+      {
+        "Code": "ADERLYP",
+        "Name": "Adderley Park"
+      },
+      {
+        "Code": "STECHFD",
+        "Name": "Stechford"
+      },
+      {
+        "Code": "LEAHALL",
+        "Name": "Lea Hall"
+      },
+      {
+        "Code": "MRSTNGR",
+        "Name": "Marston Green"
+      },
+      {
+        "Code": "BHAMINT",
+        "Name": "Birmingham International",
+        "Plat": true,
+        "ArrDep": true
+      },
+      {
+        "Code": "HMPTNIA",
+        "Name": "Hampden in Arden"
+      },
+      {
+        "Code": "BKSWELL",
+        "Name": "Berkswell"
+      },
+      {
+        "Code": "TILEH",
+        "Name": "Tile Hill"
+      },
+      {
+        "Code": "CANLEY",
+        "Name": "Canley"
+      },
+      {
+        "Code": "COVNTRY",
+        "Name": "Coventry"
+      }
+    ],
+    "Up Derby": [
+      {
+        "Code": "#EKINGS",
+        "Name": "Kings Norton"
+      },
+      {
+        "Code": "BOURNVL",
+        "Name": "Bourneville"
+      },
+      {
+        "Code": "SELYOAK",
+        "Name": "Selly Oak"
+      },
+      {
+        "Code": "UNVRSYB",
+        "Name": "University"
+      },
+      {
+        "Code": "FIVEWYS",
+        "Name": "Five Ways"
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Line": true
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction",
+        "Line": true
+      },
+      {
+        "Code": "GRJT",
+        "Name": "Grand Junction"
+      },
+      {
+        "Code": "LNDRSTJ",
+        "Name": "Landor Street Jn"
+      }
+    ],
+    "Down Derby": [
+      {
+        "Code": "#EDDY",
+        "Name": "Water Orton"
+      },
+      {
+        "Code": "LNDRSTJ",
+        "Name": "Landor Street Jn"
+      },
+      {
+        "Code": "GRJT",
+        "Name": "Grand Junction",
+        "Path": true
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction"
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Plat": "true"
+      },
+      {
+        "Code": "FIVEWYS",
+        "Name": "Five Ways"
+      },
+      {
+        "Code": "UNVRSYB",
+        "Name": "University"
+      },
+      {
+        "Code": "SELYOAK",
+        "Name": "Selly Oak"
+      },
+      {
+        "Code": "BOURNVL",
+        "Name": "Bourneville"
+      },
+      {
+        "Code": "KNORTON",
+        "Name": "Kings Norton",
+        "Line": true
+      }
+    ],
+    "Up Litchfield": [
+      {
+        "Code": "#E3OAKS",
+        "Name": "Four Oaks"
+      },
+      {
+        "Code": "SUTCO",
+        "Name": "Sutton Coldfield"
+      },
+      {
+        "Code": "WYGN",
+        "Name": "Wylde Green"
+      },
+      {
+        "Code": "CHSRD",
+        "Name": "Chester Road"
+      },
+      {
+        "Code": "ERDNGTN",
+        "Name": "Erdington"
+      },
+      {
+        "Code": "GRAVLYH",
+        "Name": "Gravelly Hill"
+      },
+      {
+        "Code": "ASTON",
+        "Name": "Aston"
+      },
+      {
+        "Code": "DUDESTN",
+        "Name": "Duddeston"
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction",
+        "Line": true
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Plat": true
+      },
+      {
+        "Code": "FIVEWYS",
+        "Name": "Five Ways"
+      },
+      {
+        "Code": "UNVRSYB",
+        "Name": "University"
+      },
+      {
+        "Code": "SELYOAK",
+        "Name": "Selly Oak"
+      },
+      {
+        "Code": "BOURNVL",
+        "Name": "Bourneville"
+      },
+      {
+        "Code": "KNORTON",
+        "Name": "Kings Norton",
+        "Line":  true
+      }
+    ],
+    "Down Litchfield": [
+      {
+        "Code": "#EKINGS",
+        "Name": "Kings Norton"
+      },
+      {
+        "Code": "BOURNVL",
+        "Name": "Bourneville"
+      },
+      {
+        "Code": "SELYOAK",
+        "Name": "Selly Oak"
+      },
+      {
+        "Code": "UNVRSYB",
+        "Name": "University"
+      },
+      {
+        "Code": "FIVEWYS",
+        "Name": "Five Ways"
+      },
+      {
+        "Code": "BHAMNWS",
+        "Name": "Birmingham New Street",
+        "ArrDep": true,
+        "Line": true
+      },
+      {
+        "Code": "PROOFHJ",
+        "Name": "Proof House Junction",
+        "Line": true
+      },
+      {
+        "Code": "DUDESTN",
+        "Name": "Duddeston"
+      },
+      {
+        "Code": "ASTON",
+        "Name": "Aston"
+      },
+      {
+        "Code": "GRAVLYH",
+        "Name": "Gravelly Hill"
+      },
+      {
+        "Code": "ERDNGTN",
+        "Name": "Erdington"
+      },
+      {
+        "Code": "CHSRD",
+        "Name": "Chester Road"
+      },
+      {
+        "Code": "WYGN",
+        "Name": "Wylde Green"
+      },
+      {
+        "Code": "SUTCO",
+        "Name": "Sutton Coldfield"
+      },
+      {
+        "Code": "FOUROKS",
+        "Name": "Four Oaks"
+      }
+    ]
+  }
+}
