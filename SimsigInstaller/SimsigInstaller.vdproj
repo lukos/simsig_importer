@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1DFC979143B7462CAFFCAB814F5370D1"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_62C86687523537FA93BEA4E9498E0411"
         "OwnerKey" = "8:_A6D9917187FB89B7C646E81C4D7523F3"
         "MsmSig" = "8:_UNDEFINED"
@@ -77,12 +83,6 @@
         {
         "MsmKey" = "8:_A6D9917187FB89B7C646E81C4D7523F3"
         "OwnerKey" = "8:_C11473654F834C4CA96B5C2676675E27"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BE9BCC9373244EB0BDE64811D62A70AA"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -363,6 +363,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1DFC979143B7462CAFFCAB814F5370D1"
+            {
+            "SourcePath" = "8:..\\SimsigImporter\\Template.xlsx"
+            "TargetName" = "8:Template.xlsx"
+            "Tag" = "8:"
+            "Folder" = "8:_14FAEF53DA174AD198086E06B2A547F2"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_62C86687523537FA93BEA4E9498E0411"
             {
             "AssemblyRegister" = "3:1"
@@ -536,26 +556,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BE9BCC9373244EB0BDE64811D62A70AA"
-            {
-            "SourcePath" = "8:..\\Template.xlsx"
-            "TargetName" = "8:Template.xlsx"
-            "Tag" = "8:"
-            "Folder" = "8:_14FAEF53DA174AD198086E06B2A547F2"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CF56E186F7161C6AB4F6C6F4A9D94C14"

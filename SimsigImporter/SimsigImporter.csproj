@@ -98,6 +98,9 @@
     <None Include="Template.xlsx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Templates\birmingham new street.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Templates\wolverhampton.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

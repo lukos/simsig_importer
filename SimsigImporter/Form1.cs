@@ -175,7 +175,7 @@ namespace SimsigImporter
             var itemsDict = new Dictionary<string, string>(100);
 
             itemsDict.Add("Aston", "aston");
-            itemsDict.Add("Birmingham New Stree", "birmingham new street");
+            itemsDict.Add("Birmingham New Street", "birmingham new street");
             itemsDict.Add("Brighton", "brighton");
             itemsDict.Add("Cardiff", "cardiff");
             itemsDict.Add("Cardiff Valleys", "cardiffvalleys");
@@ -224,6 +224,7 @@ namespace SimsigImporter
             itemsDict.Add("Motherwell", "motherwell");
             itemsDict.Add("North East Scotland", "nescot");
             itemsDict.Add("North East Wales", "newales");
+            itemsDict.Add("North Kent (Dartford)", "northkent");
             itemsDict.Add("Newport", "newport");
             itemsDict.Add("North Wales Coast", "north_wales_coast");
             itemsDict.Add("Oxford", "oxford");
