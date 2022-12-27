@@ -693,7 +693,7 @@ namespace SimsigImporterLib
                 }
                 catch(Exception)
                 {
-                    error("Unable to parse the data on row {row} of the Train Types sheet");
+                    error($"Unable to parse the data on row {row} of the Train Types sheet");
                     return null;
                 }
             }
