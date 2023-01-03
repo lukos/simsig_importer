@@ -40,7 +40,7 @@ namespace SimsigImporterLib.Helpers
             return columnNumber > 26 ? Convert.ToChar(64 + (columnNumber / 26)).ToString() + Convert.ToChar(64 + (columnNumber % 26)) : Convert.ToChar(64 + columnNumber).ToString();
         }
 
-        private static Regex simsigTime = new Regex("^[0-9]{2}:?[0-9]{2}H?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        public static Regex simsigTime = new Regex("^[0-9]{2}:?[0-9]{2}H?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
         /// <summary>
         /// Converts a 4 digit time into simsig time, which is seconds after midnight
