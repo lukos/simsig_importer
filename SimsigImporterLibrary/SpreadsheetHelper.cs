@@ -620,7 +620,7 @@ namespace SimsigImporterLib
                 {
                     activites.Add(new Activity { ActivityCode = (int)Activities.DropCoachesFront, AssociatedTrain = act.Split(':')[1] });
                 }
-                else if ( !Regex.IsMatch(act, "^[0-9]{4}$"))
+                else if ( !Regex.IsMatch(act, "^[0-9]{2}:?[0-9]{2}H?$"))
                 {
                     warning($"Unknown activity code: {act}");
                 }
