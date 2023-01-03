@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using SimsigImporterLib.Helpers;
 using Shouldly;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace SimsigImporter.Tests.Unit
 {
@@ -41,6 +42,20 @@ namespace SimsigImporter.Tests.Unit
         public void TestToSimsigTime(string input, int result)
         {
             input.ToSimsigTime().ShouldBe(result);
+        }
+
+        [TestCase(1, "A")]
+        [TestCase(26, "Z")]
+        [TestCase(27, "AA")]
+        [TestCase(52, "AZ")]
+        [TestCase(675, "YY")]
+        [TestCase(676, "YZ")]
+        [TestCase(677, "ZA")]
+        [TestCase(702, "ZZ")]
+        [TestCase(703, "AAA")]
+        public void TestToExcelColumn(int column, string result)
+        {
+            column.ToExcelColumn().ShouldBe(result);
         }
     }
 }
