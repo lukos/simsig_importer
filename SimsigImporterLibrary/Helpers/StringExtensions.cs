@@ -37,7 +37,15 @@ namespace SimsigImporterLib.Helpers
         /// <returns>The text-based Excel column</returns>
         public static string ToExcelColumn(this int columnNumber)
         {
-            return columnNumber > 26 ? Convert.ToChar(64 + (columnNumber / 26)).ToString() + Convert.ToChar(64 + (columnNumber % 26)) : Convert.ToChar(64 + columnNumber).ToString();
+            var result = "";
+
+            while (columnNumber > 0) {
+                var offset = (columnNumber - 1) % 26;
+                columnNumber = (columnNumber - 1) / 26;
+                result = $"{Convert.ToChar(65 + offset)}{result}";
+            }
+
+            return result;
         }
 
         public static Regex simsigTime = new Regex("^[0-9]{2}:?[0-9]{2}H?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
