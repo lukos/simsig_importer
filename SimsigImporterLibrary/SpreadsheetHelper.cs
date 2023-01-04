@@ -135,6 +135,31 @@ namespace SimsigImporterLib
         }
 
         /// <summary>
+        /// Contains row numbers of the various mandatory and optional parameters for each working
+        /// </summary>
+        protected struct ParamRows
+        {
+            public int Headcode { get; set; }
+            public int Power { get; set; }
+            public int Seeds { get; set; }
+            public int LocationStart { get; set; }
+            public int LocationEnd { get; set; }
+            public int Days { get; set; }
+            public int UniqueId { get; set; }
+            public int AsRequired { get; set; }
+            public int Origin { get; set; }
+            public int OriginTime { get; set; }
+            public int Destination { get; set; }
+            public int DestinationTime { get; set; }
+            public int OperatorCode { get; set; }
+            public int Notes { get; set; }
+
+            public bool HasMandatory() {
+                return Headcode != 0 && Power != 0 && Seeds != 0 && LocationStart != 0 && LocationEnd != 0;
+            }
+        }
+
+        /// <summary>
         /// The timetable is the most complex part to read in but is generally one or more columns containing train descriptions with their
         /// locations and times. We can't encapsulate all of the complexity of simsig into the target spreadsheet but we will need to decode various
         /// directives like where we stop and where we just pass and also need to link any seed groups or power specifications to types already
@@ -151,56 +176,83 @@ namespace SimsigImporterLib
             Worksheet worksheet = ((WorksheetPart)wbPart.GetPartById(ttSheet.Id)).Worksheet;
             var rows = worksheet.Descendants<Row>().ToList();
 
-            // Work out which rows are which
-            int headcodeRow = 0, powerRow = 0, seedsRow = 0, locationStartRow = 0, locationEndRow = 0, daysRow = 0, uniqueIdRow = 0, asRequiredRow = 0;
+            var paramRows = new ParamRows();
 
             for(int row = 1; row <= rows.Count; ++row)
             {
-                if ( GetCellValue(wbPart,worksheet, $"A{row}").IsMissing() )
+                var valueInColA = GetCellValue(wbPart, worksheet, $"A{row}");
+
+                if ( valueInColA.IsMissing() )
                 {
-                    if(locationStartRow != 0)
+                    if(paramRows.LocationStart != 0)
                     {
                         // The first blank entry after we have started the locations is the last location row and we don't care after that!
-                        locationEndRow = row - 1;
+                        paramRows.LocationEnd = row - 1;
                         break;
                     }
                     continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "Headcode")
+                if (valueInColA == "Headcode")
                 {
-                    headcodeRow = row; continue;
+                    paramRows.Headcode = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "UniqueId")
+                if (valueInColA == "UniqueId")
                 {
-                    uniqueIdRow = row; continue;
+                    paramRows.UniqueId = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "Power")
+                if (valueInColA == "Power")
                 {
-                    powerRow = row; continue;
+                    paramRows.Power = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "Days")
+                if (valueInColA == "Days")
                 {
-                    daysRow = row; continue;
+                    paramRows.Days = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "AsRequired")
+                if (valueInColA == "AsRequired")
                 {
-                    asRequiredRow = row; continue;
+                    paramRows.AsRequired = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}") == "Seeds")
+                if (valueInColA == "Seeds")
                 {
-                    seedsRow = row; continue;
+                    paramRows.Seeds = row; continue;
                 }
-                if (GetCellValue(wbPart, worksheet, $"A{row}").StartsWith("#"))
+
+                // misc tab items
+                if (valueInColA == "Origin")
                 {
-                    if (locationStartRow == 0)
+                    paramRows.Origin = row; continue;
+                }
+                if (valueInColA == "OriginTime")
+                {
+                    paramRows.OriginTime = row; continue;
+                }
+                if (valueInColA == "Destination")
+                {
+                    paramRows.Destination = row; continue;
+                }
+                if (valueInColA == "DestinationTime")
+                {
+                    paramRows.DestinationTime = row; continue;
+                }
+                if (valueInColA == "OperatorCode")
+                {
+                    paramRows.OperatorCode = row; continue;
+                }
+                if (valueInColA == "Notes")
+                {
+                    paramRows.Notes = row; continue;
+                }
+                if (valueInColA.StartsWith("#"))
+                {
+                    if (paramRows.LocationStart == 0)
                     {
-                        locationStartRow = row;
+                        paramRows.LocationStart = row;
                     }
                     continue;
                 }
             }
 
-            if ( headcodeRow == 0 || powerRow == 0 || seedsRow == 0 || locationStartRow == 0 || locationEndRow == 0 )
+            if ( !paramRows.HasMandatory() )
             {
                 error("Cannot find all of the rows in the Timetable sheet");
                 return null;
@@ -211,7 +263,7 @@ namespace SimsigImporterLib
             var workingColumn = 1;
             for(int firstCol = 3; firstCol < 10; ++firstCol)
             {
-                if (GetCellValue(wbPart, worksheet, $"{firstCol.ToExcelColumn()}{headcodeRow}").IsPresent())
+                if (GetCellValue(wbPart, worksheet, $"{firstCol.ToExcelColumn()}{paramRows.Headcode}").IsPresent())
                 {
                     workingColumn = firstCol;
                     break;
@@ -229,11 +281,11 @@ namespace SimsigImporterLib
             {
                 // Attempt to process a timetable in each column on the sheet. Note that it is possible there are extra blank columns
                 // and others with random stuff so just look for headcode content
-                if (GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{headcodeRow}").IsMissing())
+                if (GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{paramRows.Headcode}").IsMissing())
                 {
                     continue;
                 }
-                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, headcodeRow, powerRow, seedsRow, locationStartRow, locationEndRow, daysRow, uniqueIdRow, asRequiredRow);
+                var timetable = ProcessTimetableColumn(wbPart, worksheet, workCol, paramRows);
                 if ( timetable != null)
                 {
                     timetables.Add(timetable);
@@ -252,22 +304,27 @@ namespace SimsigImporterLib
         /// <summary>
         /// Attempts to parse an excel column to create a timetable object
         /// </summary>
-        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, int headcodeRow, int powerRow, int seedRow, int locationStartRow, int locationEndRow, int daysRow, int uniqueIdRow, int asRequiredRow)
+        private Timetable ProcessTimetableColumn(WorkbookPart wbPart, Worksheet worksheet, int workCol, ParamRows paramRows)
         {
+            var column = workCol.ToExcelColumn();
+            string ValueInRow(int row) {
+                return GetCellValue(wbPart, worksheet, $"{column}{row}");
+            }
+
             var tt = new Timetable();
             try
             {
-                tt.ID = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{headcodeRow}");
-                tt.Category = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{powerRow}");     // We will relink these after loading them all
-                tt.SeedPoint = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{seedRow}");
+                tt.ID = ValueInRow(paramRows.Headcode);
+                tt.Category = ValueInRow(paramRows.Power);     // We will relink these after loading them all
+                tt.SeedPoint = ValueInRow(paramRows.Seeds);
 
-                if ( uniqueIdRow > 0 )
+                if (paramRows.UniqueId > 0 )
                 {
-                    tt.UID = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{uniqueIdRow}");
+                    tt.UID = ValueInRow(paramRows.UniqueId);
                 }
-                if ( asRequiredRow > 0 )
+                if (paramRows.AsRequired > 0 )
                 {
-                    var value = Convert.ToInt32(GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{asRequiredRow}"));
+                    var value = Convert.ToInt32(ValueInRow(paramRows.AsRequired));
                     if (value > 0)
                     {
                         tt.AsRequired = true;
@@ -275,15 +332,39 @@ namespace SimsigImporterLib
                     }
                 }
 
-                var days = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{daysRow}");
+                var days = ValueInRow(paramRows.Days);
                 if ( Validators.VerifyDayCode(days))
                 {
                     tt.Days = days;
                 }
 
-                for (int row = locationStartRow; row <= locationEndRow; ++row)
+                if (paramRows.Origin > 0)
                 {
-                    var cellContents = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row}");
+                    tt.OriginName = ValueInRow(paramRows.Origin);
+                }
+                if (paramRows.OriginTime > 0)
+                {
+                    tt.OriginTime = ValueInRow(paramRows.OriginTime).ToSimsigTime();
+                }
+                if (paramRows.Destination > 0) {
+                    tt.DestinationName = ValueInRow(paramRows.Destination);
+                }
+                if (paramRows.DestinationTime > 0)
+                {
+                    tt.DestinationTime = ValueInRow(paramRows.DestinationTime).ToSimsigTime();
+                }
+                if (paramRows.OperatorCode > 0)
+                {
+                    tt.OperatorCode = ValueInRow(paramRows.OperatorCode);
+                }
+                if (paramRows.Notes > 0)
+                {
+                    tt.Notes = ValueInRow(paramRows.Notes);
+                }
+
+                for (int row = paramRows.LocationStart; row <= paramRows.LocationEnd; ++row)
+                {
+                    var cellContents = ValueInRow(row);
                     if (cellContents.IsMissing())
                     {
                         continue;
@@ -307,7 +388,7 @@ namespace SimsigImporterLib
                     {
                         // Just a normal trip entry
                         // bold means that it arrives 1 minute earlier than the time in the cell
-                        var cell = GetCell(worksheet, $"{workCol.ToExcelColumn()}{row}");
+                        var cell = GetCell(worksheet, $"{column}{row}");
                         var isBold = cell.StyleIndex == 11;
 
                         var trip = new Trip
@@ -318,7 +399,7 @@ namespace SimsigImporterLib
                             IsPassTime = !isBold
                         };
                         // Check for allowances
-                        var nextCell = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row+1}");
+                        var nextCell = ValueInRow(row+1);
                         if ( HasAllowances(trip, nextCell))
                         { 
                             ++row;
@@ -337,21 +418,21 @@ namespace SimsigImporterLib
                         {
                             trip.Path = cellContents;   // No checking
                             ++row;
-                            cellContents = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row}");
+                            cellContents = GetCellValue(wbPart, worksheet, $"{column}{row}");
                             specialCode = GetCellValue(wbPart, worksheet, $"B{row}");
                         }
                         if (specialCode == "Plat")
                         {
                             trip.Platform = cellContents;   // No checking, could be e.g. 1A
                             ++row;
-                            cellContents = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row}");
+                            cellContents = GetCellValue(wbPart, worksheet, $"{column}{row}");
                             specialCode = GetCellValue(wbPart, worksheet, $"B{row}");
                         }
                         if (specialCode == "Line")
                         {
                             trip.Line = cellContents;   // No checking
                             ++row;
-                            cellContents = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row}");
+                            cellContents = GetCellValue(wbPart, worksheet, $"{column}{row}");
                             specialCode = GetCellValue(wbPart, worksheet, $"B{row}");
                         }
                         if (specialCode == "Arr")
@@ -366,7 +447,7 @@ namespace SimsigImporterLib
                             }
                             trip.IsPassTime = !cellContents.IsPresent();
                             ++row;
-                            cellContents = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row}");
+                            cellContents = GetCellValue(wbPart, worksheet, $"{column}{row}");
                             specialCode = GetCellValue(wbPart, worksheet, $"B{row}");
                         }
                         if(specialCode == "Dep")
@@ -381,7 +462,7 @@ namespace SimsigImporterLib
                                 }
                             }
                             // Check for allowances
-                            var nextCell = GetCellValue(wbPart, worksheet, $"{workCol.ToExcelColumn()}{row + 1}");
+                            var nextCell = GetCellValue(wbPart, worksheet, $"{column}{row + 1}");
                             if (HasAllowances(trip, nextCell))
                             {
                                 ++row;
@@ -394,7 +475,7 @@ namespace SimsigImporterLib
             }
             catch(Exception)
             {
-                warning($"Cannot read timetable column {workCol.ToExcelColumn()}. Ignoring");
+                warning($"Cannot read timetable column {column}. Ignoring");
                 return null;
             }
             return tt;

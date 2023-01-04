@@ -24,7 +24,7 @@ namespace SimsigImporterLib.Models
         /// <summary>
         /// Gets or sets the display text for this working
         /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; set; } = "$template";
 
         /// <summary>
         /// The departure time in seconds from midnight
